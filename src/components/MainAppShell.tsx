@@ -104,7 +104,7 @@ const MainAppShell = () => {
                       : theme.colors.gray[9],
                   fontSize: "25px",
                 })}
-              >
+               >
                 <div
                   style={{
                     display: "flex",
@@ -130,7 +130,7 @@ const MainAppShell = () => {
                     }}
                   >
                     <CgCalculator />
-                    <Text ml={10}>Expense Tracker App</Text>
+                    <Text ml={10}>BudgetSync</Text>
                   </div>
                   <DarkLightThemeButton />
                 </div>
