@@ -7,7 +7,7 @@ const HistoryStack = () => {
   const { history } = useContext(HistoryContext);
 
   return (
-    <div style={{ width: "500px" }}>
+    <div className="bg-[#202020]">
       <Text
         size="xl"
         sx={(theme) => ({
@@ -28,10 +28,11 @@ const HistoryStack = () => {
               ? theme.colors.dark[8]
               : theme.colors.gray[0],
           height: 300,
-          width: 500,
+          width: "100%",
           paddingRight: 15,
         })}
-      >
+        className="p-4 bg-[#202020]"
+       >
         <Stack>
           {history.map((item) => {
             return (

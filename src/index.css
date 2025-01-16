@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mantine-ncp7qi {
+    border: 2px solid #f0f0f0;
+}

@@ -30,10 +30,10 @@ const NavigationLink = ({ icon, label, link }: NavigationLinkProps) => {
       })}
     >
       <Group>
-        <ThemeIcon variant="light" style={{backgroundColor: "transparent"}}>
+        <ThemeIcon className="text-[4rem]" variant="light" style={{backgroundColor: "transparent"}}>
           {icon}
         </ThemeIcon>
-        <Text size="lg">{label}</Text>
+        <Text>{label}</Text>
       </Group>
     </UnstyledButton>
   );

@@ -55,11 +55,15 @@ const PieChart = () => {
 
   const data = [
     {
-      type: "Budget",
+      type: "",
       amount: budget,
-      color: "#4BDB6B",
+      color: "#28A745",
     },
-    { type: "Expenses", amount: expenses, color: "#FF6C6C" },
+    { 
+      type: "", 
+      amount: expenses, 
+      color: "#DC3545" 
+    },
   ];
 
   useEffect(() => {
@@ -83,6 +87,7 @@ const PieChart = () => {
       ref={canvasRef}
       width={500}
       height={400}
+      style={{ width: "100%", height: "auto" }}
     />
   );
 };

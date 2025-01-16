@@ -1,51 +1,57 @@
 # BudgetSync: Overview
 
+Welcome to BudgetSync, your go-to solution for seamless expense tracking and financial management, designed with a user-friendly interface to keep you engaged and excited.
+
 ## Deployment
-This app is being deployed using Netlify  
-Link to app: https://expense-tracker-react-ts-app.netlify.app
+This app is deployed using Netlify.
+Access the app here: [BudgetSync](https://BudgetSync)
 
-## Motivation Behind Project 
-As a university student it is very important to be able to keep track of where I am spending my money. Many of the expense tracking websites and apps
-either lack functionality or in design.  
-I decided to create an expense tracking app that has both the functionality and the design.  
-This project was also a great chance for me to learn the Mantine UI library.
+## Motivation Behind the Project 
+As a university student, keeping track of my expenses is crucial. Many expense-tracking websites and apps either lack functionality or appeal. I aimed to create an expense-tracking app that excels in both. This project also provided an opportunity to learn and implement the Mantine UI library.
 
-## Resources and Technologies used
-Technologies: ReactJS, React Router, React Icons, TypeScript, Mantine UI, HTML canvas API, Local Storage, and ViteJS.  
-React Docs Beta: https://beta.reactjs.org/  
-React Router Docs: https://reactrouter.com/en/main  
-React Icons Website: https://react-icons.github.io/react-icons  
-Mantine UI Docs: https://mantine.dev/pages/getting-started/  
-Canvas API Docs: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API  
+## Resources and Technologies Used
+Technologies: 
+- **ReactJS** 
+- **React Router** 
+- **React Icons** 
+- **TypeScript** 
+- **Mantine UI** 
+- **HTML Canvas API** 
+- **Local Storage** 
+- **ViteJS**
 
-## Quick Description of app
-<ul>
-<li>This app includes the common expense tracking features such as a total budget and expenses counter as well as transaction history.   </li>
-<li>The user is able to reset both budget and expenses amount as well as delete a transaction. After a transaction is deleted the effect it had on the budget / expenses is undone.  </li>
-<li>Clicking on a transaction reveals more information about it as well as giving the user the ability to delete the transaction.  </li>
-<li>The app also includes the ability to categorize expenses. The user can pick out of 3 pre-existing categories or create their own.  </li>
-<li>The user is also able to view their Budget and Expenses in a pie chart to easily visualize their financial state.  </li>
-<li>The user is also able to select either a dark or light theme for their app.  </li>
-<li>All user's data is stored in their browser's local storage.  </li>
-</ul>
+Useful Links:
+- [React Docs Beta](https://beta.reactjs.org/)
+- [React Router Docs](https://reactrouter.com/en/main)
+- [React Icons Website](https://react-icons.github.io/react-icons)
+- [Mantine UI Docs](https://mantine.dev/pages/getting-started/)
+- [Canvas API Docs](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)
 
-## What I Learned
-<ul>
-<li>I advanced my knowledge of types and type safety in TypeScript and became more familair with the langauge.  </li>
-<li>I learned more about React hooks, mainly the useContext hook and how it can be very useful when state is passed down multiple components.  </li>
-<li>I learned how to use Mantine UI library and the components and hooks it provides.  </li>
-<li>I learned about HMLT canvas API and how to use it to draw a simple pie chart.  </li>
-<li>I learned how to use some external React libraries such as react router and react icons.  </li>
-<li>I learned how to use ViteJS to create a React project that uses TypeScript as an alternative to using create-react-app and manually integrating TypeScript.  </li>
-<li>I became more familar with inline CSS styling in React componenets.  </li>
-<li>I became more familair with JavaScript and its built in methods for arrays such as forEach, map, filter and reduce.  </li>
-</ul>
+## Quick Description of the App
+- **Comprehensive Tracking**: Track your total budget, expenses, and transaction history effortlessly.
+- **Reset & Delete Transactions**: Reset budget and expenses, and delete transactions with ease. Deleting a transaction reverses its effect on your budget/expenses.
+- **Detailed Transaction Info**: Clicking on a transaction reveals detailed information and the option to delete it.
+- **Expense Categorization**: Categorize your expenses with pre-existing categories or create your own.
+- **Visual Financial Overview**: Visualize your financial state with an intuitive pie chart.
+- **Theme Selection**: Choose between a dark or light theme to suit your preference.
+- **Local Data Storage**: All data is securely stored in your browser's local storage.
 
-## Steps going forward
-<ul>
-<li>I plan to learn how to use Redux for state management.  </li>
-<li>I plan to experience with other UI libraries such as Material UI and Chakara UI.  </li>
-<li>I plan to make this app mobile responsive throught CSS media queries or using TailwindCSS  </li>
-<li>I plan to learn how to add a backend to the BudgetSync and use a database (most likely MongoDB) to store the data instead of local storage.  </li>
-</ul>
-# BudgetSync
+## Key Learnings
+- Advanced my knowledge of types and type safety in TypeScript.
+- Enhanced understanding of React hooks, especially the `useContext` hook.
+- Gained proficiency with the Mantine UI library and its components.
+- Learned to use the HTML Canvas API to draw simple pie charts.
+- Worked with external React libraries like React Router and React Icons.
+- Leveraged ViteJS to create a React project with TypeScript, as an alternative to create-react-app.
+- Became more familiar with inline CSS styling in React components.
+- Improved my JavaScript skills, especially array methods like `forEach`, `map`, `filter`, and `reduce`.
+
+## Future Steps
+- Plan to learn Redux for state management.
+- Explore other UI libraries such as Material UI and Chakra UI.
+- Make the app mobile responsive using CSS media queries or TailwindCSS.
+- Add a backend to BudgetSync, using a database (most likely MongoDB) to store data instead of local storage.
+
+---
+
+Feel free to use this refined version to present your project with a more engaging and user-friendly approach. Happy coding! 🌟

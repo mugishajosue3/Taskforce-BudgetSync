@@ -23,6 +23,7 @@ import AddBudgetPage from "../pages/AddBudgetPage";
 import AddExpensePage from "../pages/AddExpensePage";
 import { useLocalStorage } from "@mantine/hooks";
 import DisplayCategoriesPage from "../pages/DisplayCategoriesPage";
+import './../index.css';
 
 type HistoryElement = {
   id: string;
@@ -113,7 +114,7 @@ const MainAppShell = () => {
                     height: "100%",
                   }}
                 >
-                  <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+                  {/* <MediaQuery largerThan="sm" styles={{ display: "none" }}>
                     <Burger
                       opened={opened}
                       onClick={() => setOpened((o) => !o)}
@@ -121,7 +122,7 @@ const MainAppShell = () => {
                       color={theme.colors.gray[6]}
                       mr="xl"
                     />
-                  </MediaQuery>
+                  </MediaQuery> */}
                   <div
                     style={{
                       display: "flex",
@@ -129,14 +130,18 @@ const MainAppShell = () => {
                       height: "100%",
                     }}
                   >
-                    <CgCalculator />
+                   <img 
+                   src="/icons8-calculator-64.png" 
+                   alt="BudgetSync Logo"
+                   className="h-10 w-10"
+                   />
                     <Text ml={10}>BudgetSync</Text>
                   </div>
                   <DarkLightThemeButton />
                 </div>
               </Header>
             }
-          >
+           >
             {/* Handle Routing */}
             <Routes>
               <Route path="/" element={<HomePage />} />
