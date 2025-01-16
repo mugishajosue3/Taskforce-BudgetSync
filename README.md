@@ -1,4 +1,4 @@
-# Expense Tracker App: Overview
+# BudgetSync: Overview
 
 ## Deployment
 This app is being deployed using Netlify  
@@ -46,5 +46,6 @@ Canvas API Docs: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
 <li>I plan to learn how to use Redux for state management.  </li>
 <li>I plan to experience with other UI libraries such as Material UI and Chakara UI.  </li>
 <li>I plan to make this app mobile responsive throught CSS media queries or using TailwindCSS  </li>
-<li>I plan to learn how to add a backend to the expense tracker app and use a database (most likely MongoDB) to store the data instead of local storage.  </li>
+<li>I plan to learn how to add a backend to the BudgetSync and use a database (most likely MongoDB) to store the data instead of local storage.  </li>
 </ul>
+# BudgetSync
