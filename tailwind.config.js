@@ -21,15 +21,7 @@ module.exports = {
         xs: '475px', // Extra Small screens
         sm: '640px', // Small
         md: '768px', // Medium
-<<<<<<< HEAD
-        lg: '1200px', // Large
-=======
-<<<<<<< HEAD
         lg: '1024px', // Large
-=======
-        lg: '1200px', // Large
->>>>>>> 818e543 (styles)
->>>>>>> d50be06 (a)
         xl: '1280px', // Extra Large
         '2xl': '1536px', // Extra Extra Large
       },

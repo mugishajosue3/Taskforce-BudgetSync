@@ -60,15 +60,7 @@ const PieChart = () => {
       color: "#28A745",
     },
     { 
-<<<<<<< HEAD
       type: "", 
-=======
-<<<<<<< HEAD
-      type: "Expenses", 
-=======
-      type: "", 
->>>>>>> 818e543 (styles)
->>>>>>> d50be06 (a)
       amount: expenses, 
       color: "#DC3545" 
     },
