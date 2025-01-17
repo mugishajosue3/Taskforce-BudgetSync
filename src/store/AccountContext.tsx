@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 type Account = {
   id: string
-  type: 'solo' | 'duo' | 'family'
+  type: 'Account A' | 'Account B' | 'Account C'
   name: string
   users: number
 }
@@ -13,6 +13,8 @@ type AccountContextType = {
   accounts: Account[]
   setCurrentAccount: (account: Account) => void
   addAccount: (account: Account) => void
+  showModal: boolean
+  setShowModal: (show: boolean) => void
 }
 
 const AccountContext = createContext<AccountContextType | null>(null)
@@ -20,17 +22,21 @@ const AccountContext = createContext<AccountContextType | null>(null)
 export function AccountProvider({ children }: { children: React.ReactNode }) {
   const [currentAccount, setCurrentAccount] = useState<Account | null>(null)
   const [accounts, setAccounts] = useState<Account[]>([])
+  const [showModal, setShowModal] = useState(true) // Start with modal visible
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!currentAccount && location.pathname !== '/') {
-      navigate('/')
+    // Show modal if no account is selected
+    if (!currentAccount) {
+      setShowModal(true)
     }
-  }, [currentAccount, navigate])
+  }, [currentAccount])
 
   const addAccount = (account: Account) => {
     setAccounts(prev => [...prev, account])
     setCurrentAccount(account)
+    setShowModal(false) // Hide modal after account selection
+    navigate('/')
   }
 
   return (
@@ -39,7 +45,9 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
         currentAccount, 
         accounts, 
         setCurrentAccount, 
-        addAccount 
+        addAccount,
+        showModal,
+        setShowModal
       }}
     >
       {children}
@@ -48,7 +56,6 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useAccount() {
-  console.log('AccountContext: ', AccountContext)
   const context = useContext(AccountContext)
   if (!context) throw new Error('useAccount must be used within AccountProvider')
   return context

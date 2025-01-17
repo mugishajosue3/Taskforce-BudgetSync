@@ -1,6 +1,7 @@
 import { useLocalStorage } from "@mantine/hooks";
 import { createContext, ReactNode } from "react";
 
+// Type definitions
 type HistoryContextProps = {
   children: ReactNode;
 };
@@ -21,6 +22,7 @@ type HistoryContextType = {
   deleteHistoryElement: (id: string) => void;
 };
 
+// Context initialization
 const HistoryContext = createContext<HistoryContextType>({
   history: [],
   setHistory: (history: HistoryElement[]) => {},
@@ -28,9 +30,18 @@ const HistoryContext = createContext<HistoryContextType>({
   deleteHistoryElement: (id: string) => {},
 });
 
+// The Provider component
 export function HistoryContextProvider({ children }: HistoryContextProps) {
+  // Use user ID to fetch history from localStorage for different accounts
+  const userId = localStorage.getItem("accountType"); // Fetch current user's ID (you can store this when user logs in)
+  // console.log('user Id:' , userId)
+
+  // If there's no userId, assign a default one (or handle user creation/login logic)
+  const currentUserId = userId || "false"; 
+
+  // Use localStorage to store user-specific history
   const [history, setHistory] = useLocalStorage<HistoryElement[]>({
-    key: "History",
+    key: `${currentUserId}_History`, // Key is unique to each user
     defaultValue: [],
   });
 
@@ -38,9 +49,8 @@ export function HistoryContextProvider({ children }: HistoryContextProps) {
     setHistory(history);
   }
 
-  // takes in a historyElement item and adds it to the history
+  // Adds a history element for the specific user
   function addHistoryElementHandler(element: HistoryElement) {
-    // creates a new date
     var today = new Date();
     var date =
       today.getDate() +
@@ -63,13 +73,14 @@ export function HistoryContextProvider({ children }: HistoryContextProps) {
     });
   }
 
-  // takes in an ID and deletes the history element with that ID
+  // Deletes a history element for the specific user
   function deleteHistoryElementHandler(id: string) {
     setHistory((prev) => {
       return prev.filter((h) => h.id !== id);
     });
   }
 
+  // Context value
   const context = {
     history: history,
     setHistory: setHistoryHandler,

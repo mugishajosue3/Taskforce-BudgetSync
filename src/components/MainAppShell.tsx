@@ -9,9 +9,11 @@ import {
   Navbar,
   Text,
   useMantineTheme,
+  Menu,
+  Button,
 } from "@mantine/core";
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom"; // Remove BrowserRouter import
+import { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import { CgCalculator } from "react-icons/cg";
 import { AiOutlineHome } from "react-icons/ai";
 import { MdAttachMoney } from "react-icons/md";
@@ -23,14 +25,8 @@ import AddBudgetPage from "../pages/AddBudgetPage";
 import AddExpensePage from "../pages/AddExpensePage";
 import { useLocalStorage } from "@mantine/hooks";
 import DisplayCategoriesPage from "../pages/DisplayCategoriesPage";
-import './../index.css';
-
-type HistoryElement = {
-  id: string;
-  label: string;
-  amount: number;
-  type: string;
-};
+import "./../index.css";
+import AccountSelectionModal from "./AccountSelectionModal";
 
 const MainAppShell = () => {
   const theme = useMantineTheme();
@@ -39,6 +35,27 @@ const MainAppShell = () => {
     key: "theme",
     defaultValue: "dark",
   });
+  const [accountType, setAccountType] = useState<string>("false");
+
+  useEffect(() => {
+    const storedAccountType = localStorage.getItem("accountType");
+    if (storedAccountType) setAccountType(storedAccountType);
+  }, []);
+
+  if(accountType === 'false') 
+    return <AccountSelectionModal />
+  
+
+  const handleAccountChange = (type: string) => {
+    if (type === "Log out") {
+      localStorage.removeItem("accountType");
+      setAccountType("false");
+    } else {
+      setAccountType(type);
+      localStorage.setItem("accountType", type);
+    }
+  };
+
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
@@ -90,6 +107,49 @@ const MainAppShell = () => {
                 icon={<BsBarChartLine />}
                 link="/categories"
               />
+
+              {/* Account Dropdown */}
+              <div
+                style={{
+                  marginTop: "auto",
+                  borderTop: `1px solid ${
+                    theme.colorScheme === "dark"
+                      ? theme.colors.dark[4]
+                      : theme.colors.gray[3]
+                  }`,
+                  paddingTop: theme.spacing.sm,
+                }}
+              >
+                <Menu>
+                  <Menu.Target>
+                    <Button
+                      fullWidth
+                      variant="outline"
+                      color="gray"
+                    >
+                      {accountType}
+                    </Button>
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Menu.Item onClick={() => handleAccountChange("Account A")}>
+                      Account A
+                    </Menu.Item>
+                    <Menu.Item onClick={() => handleAccountChange("Account B")}>
+                      Account B
+                    </Menu.Item>
+                    <Menu.Item onClick={() => handleAccountChange("Account C")}>
+                      Account C
+                    </Menu.Item>
+                    <Menu.Divider />
+                    <Menu.Item
+                      color="red"
+                      onClick={() => handleAccountChange("Log out")}
+                    >
+                      Log out
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              </div>
             </Navbar>
           }
           header={
@@ -119,8 +179,8 @@ const MainAppShell = () => {
                     height: "100%",
                   }}
                 >
-                  <img 
-                    src="/icons8-calculator-64.png" 
+                  <img
+                    src="/icons8-calculator-64.png"
                     alt="BudgetSync Logo"
                     className="h-10 w-10"
                   />

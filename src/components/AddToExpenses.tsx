@@ -24,15 +24,84 @@ const AddToExpenses = () => {
   const [category, setCategory] = useState<string[]>([""]);
   const navigate = useNavigate();
 
+  const predefinedCategories = [
+    { value: "food", label: "Food & Dining", isused: "false" },
+    { value: "transportation", label: "Transportation", isused: "false" },
+    { value: "utilities", label: "Utilities", isused: "false" },
+    { value: "entertainment", label: "Entertainment", isused: "false" },
+    { value: "shopping", label: "Shopping", isused: "false" },
+    { value: "healthcare", label: "Healthcare", isused: "false" },
+    { value: "travel", label: "Travel", isused: "false" },
+    { value: "education", label: "Education", isused: "false" },
+    { value: "rent", label: "Rent & Housing", isused: "false" },
+    { value: "insurance", label: "Insurance", isused: "false" },
+  ];
+
   return (
     <div>
+      {/* <Text
+        size="xl"
+        weight={700}
+        sx={(theme) => ({
+          color:
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[0]
+              : theme.colors.gray[9],
+        })}
+      >
+        Add a Category to Your Expense
+      </Text> */}
+      <MultiSelect
+        w="40%"
+        mt={10}
+        data={predefinedCategories}
+        // label="Select a Category"
+        placeholder="Select a category or create a new one"
+        searchable
+        creatable
+        value={category}
+        onChange={setCategory}
+        maxSelectedValues={1}
+        getCreateLabel={(query) =>
+          `+ Create ${query.charAt(0).toUpperCase()}${query.slice(1)}`
+        }
+        onCreate={(query) => {
+          const capitalizedQuery =
+            query.charAt(0).toUpperCase() + query.slice(1).toLowerCase();
+          const newCategory = {
+            value: query.toLowerCase(),
+            label: capitalizedQuery,
+            isused: "false",
+          };
+
+          console.log("New category created:", newCategory);
+          setAvailableCategories((current) => [newCategory, ...current]);
+          return newCategory;
+        }}
+        styles={(theme) => ({
+          input: {
+            "&:focus": {
+              borderColor: theme.colors.blue[5],
+            },
+          },
+          item: {
+            "&[data-selected]": {
+              "&, &:hover": {
+                backgroundColor: theme.colors.blue[1],
+                color: theme.colors.blue[9],
+              },
+            },
+          },
+        })}
+      />
+
       <TextInput
         onChange={(e) => setLabel(e.currentTarget.value)}
         mt={20}
         size="md"
         w="40%"
         placeholder="Ex: Car payments"
-        label="Label"
+        label="Specify SubCategory"
         withAsterisk
       />
       <TextInput
@@ -44,46 +113,8 @@ const AddToExpenses = () => {
         label="Amount"
         withAsterisk
       />
-      <Divider mt={30} mb={20} />
-      <Text
-        size="xl"
-        weight={700}
-        sx={(theme) => ({
-          color:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[0]
-              : theme.colors.gray[9],
-        })}
-      >
-        Add a Category to Your Expense
-      </Text>
-      <MultiSelect
-        w="40%"
-        mt={10}
-        data={availableCategories}
-        label="Select a Category"
-        placeholder="Select a category or create a new one"
-        searchable
-        creatable
-        value={category}
-        onChange={setCategory}
-        maxSelectedValues={1}
-        getCreateLabel={(query) =>
-          `+ Create ${query[0].toUpperCase() + query.substring(1)}`
-        }
-        onCreate={(query) => {
-          const capQuery = query[0].toUpperCase() + query.substring(1);
-          const item = {
-            value: capQuery,
-            label: capQuery,
-            isused: "false",
-          };
-          console.log("hello");
-
-          setAvailableCategories((current) => [item, ...current]);
-          return item;
-        }}
-      />
+      {/* <Divider mt={30} mb={20} /> */}
+      
       <div style={{ display: "flex", alignItems: "center", marginTop: 20 }}>
         <Button
           mr={30}
