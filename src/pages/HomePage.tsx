@@ -209,6 +209,8 @@ import PieChart from "../components/PieChart";
 import HistoryStack from "../components/HistoryStack";
 import { useLocalStorage } from "@mantine/hooks";
 import { ColorScheme, ColorSchemeProvider } from "@mantine/core";
+import { IsAuth, AuthanticatedProvider } from "@mantine/core";
+import AccountSelectionModal from "../components/AccountSelectionModal";
 
 export default function HomePage() {
   const { getTotalAmount } = useContext(CategoriesContext);
@@ -216,10 +218,21 @@ export default function HomePage() {
     key: "theme",
     defaultValue: "dark",
   });
+  const [isAuth, setIsAuth] = useLocalStorage<IsAuth>({
+    key: "Auth",
+    defaultValue: "false",
+  });
   const budget = getTotalAmount("Budget");
   const expenses = getTotalAmount("Expenses");
   const balance = budget - expenses;
-  console.log("color scheme : ", colorScheme);
+
+  if(isAuth === 'false') 
+    return <div><AccountSelectionModal /></div>
+    // return <AccountSelectionModal />
+
+
+  // console.log("Authorized  : ", isAuth);
+  // console.log("color scheme : ", colorScheme);
 
   return (
     <div

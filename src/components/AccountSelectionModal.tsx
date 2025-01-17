@@ -2,28 +2,31 @@
 
 import { useNavigate } from 'react-router-dom'
 import { useAccount } from '../store/AccountContext'
-import { Users, User, Baby } from 'lucide-react'
+// import { Users, User, Baby } from 'lucide-react'
 
 const accountTypes = [
   {
     id: 'solo',
     title: 'Solo',
     description: 'One user account',
-    icon: User,
+    icon: "UserIcon",    
+    // icon: User,
     users: 1
   },
   {
     id: 'duo',
     title: 'Duo',
     description: 'Two user accounts',
-    icon: Users,
+    icon: "UsersIcon",
+    // icon: Users,
     users: 2
   },
   {
     id: 'family',
     title: 'Family',
     description: 'Six user accounts',
-    icon: Baby,
+    icon: "BabyIcon",    
+    // icon: Baby,
     users: 6
   }
 ]
@@ -59,7 +62,8 @@ export default function AccountSelectionModal() {
                 className="group relative rounded-lg border p-6 hover:bg-accent hover:text-accent-foreground"
               >
                 <div className="space-y-2">
-                  <type.icon className="h-6 w-6" />
+                  {/* <type.icon className="h-6 w-6" /> */}
+                  <type.icon />
                   <h3 className="font-bold">{type.title}</h3>
                   <p className="text-sm text-muted-foreground">
                     {type.description}

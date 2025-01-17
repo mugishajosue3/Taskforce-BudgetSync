@@ -23,9 +23,9 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // if (!currentAccount && location.pathname !== '/') {
-    //   navigate('/')
-    // }
+    if (!currentAccount && location.pathname !== '/') {
+      navigate('/')
+    }
   }, [currentAccount, navigate])
 
   const addAccount = (account: Account) => {
@@ -48,6 +48,7 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useAccount() {
+  console.log('AccountContext: ', AccountContext)
   const context = useContext(AccountContext)
   if (!context) throw new Error('useAccount must be used within AccountProvider')
   return context
