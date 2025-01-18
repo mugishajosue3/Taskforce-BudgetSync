@@ -47,18 +47,21 @@ const HistoryStack = () => {
     }
   }, [fromDate, toDate, history]);
 
+  const accountType = localStorage.getItem("accountType");
+  // console.log("Account Type:", accountType);
+
   const handlePrint = () => {
     const printContent = document.getElementById('history-table');
-    const windowPrint = window.open('', '', 'width=900,height=650');
+    const windowPrint = window.open('', '', 'width=1200,height=950');
     
     windowPrint.document.write(`
       <html>
         <head>
-          <title>Transaction History</title>
+          <title>Transaction History on ${accountType}</title>
           <style>
             table { width: 100%; border-collapse: collapse; }
-            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-            th { background-color: #333; color: white; }
+            th, td { border: 1px solid #black; padding: 8px; text-align: left; }
+            th { background-color: #333; color: black; }
           </style>
         </head>
         <body>
