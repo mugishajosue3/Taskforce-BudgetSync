@@ -5,6 +5,7 @@ import AvailableCategoriesContext from "../store/AvailableCategoriesContext";
 import CategoriesContext from "../store/CategoriesContext";
 import HistoryContext from "../store/HistoryContext";
 import DeleteCatToolTip from "./DeleteCatToolTip";
+import DatePicker from "./DatePicker";
 
 type AvailableCategories = {
   label: string;
@@ -23,6 +24,11 @@ const AddToExpenses = () => {
 
   const [category, setCategory] = useState<string[]>([""]);
   const navigate = useNavigate();
+  const [selectedDate, setSelectedDate] = useState<string>("");
+
+  const handleDateChange = (date: string) => {
+    setSelectedDate(date); // Update selected date in dd/mm/yyyy format
+  };
 
   const predefinedCategories = [
     { value: "food", label: "Food & Dining", isused: "false" },
@@ -51,11 +57,12 @@ const AddToExpenses = () => {
       >
         Add a Category to Your Expense
       </Text> */}
+      <DatePicker label="Choose a date:" value={selectedDate} onChange={handleDateChange} />
       <MultiSelect
         w="40%"
         mt={10}
         data={predefinedCategories}
-        // label="Select a Category"
+        label="Select a Category"
         placeholder="Select a category or create a new one"
         searchable
         creatable
@@ -114,7 +121,7 @@ const AddToExpenses = () => {
         withAsterisk
       />
       {/* <Divider mt={30} mb={20} /> */}
-      
+
       <div style={{ display: "flex", alignItems: "center", marginTop: 20 }}>
         <Button
           mr={30}
@@ -151,7 +158,7 @@ const AddToExpenses = () => {
                 amount: value,
                 id: crypto.randomUUID(),
                 type: "Expense",
-                dateCreated: "",
+                dateCreated: selectedDate,
                 category: category[0],
               });
             }

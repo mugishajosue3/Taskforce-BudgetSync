@@ -5,9 +5,24 @@ import { useContext } from "react";
 
 const HistoryStack = () => {
   const { history } = useContext(HistoryContext);
+  const stickyHeaderStyle = {
+    position: 'sticky',
+    top: 0,
+    backgroundColor: '#202020',
+    zIndex: 1,
+  };
+  
+  const tableHeaderStyle = {
+    padding: "12px 15px",
+    textAlign: "left",
+    fontSize: "16px",
+    fontWeight: "bold",
+    backgroundColor: "#333",
+    color: "#fff",
+  };
 
   return (
-    <div className="bg-[#202020]">
+    <div className="bg-[#202020] p-4">
       <Text
         size="xl"
         sx={(theme) => ({
@@ -16,6 +31,7 @@ const HistoryStack = () => {
               ? theme.colors.dark[0]
               : theme.colors.gray[9],
         })}
+        mb="md"
       >
         Transaction History
       </Text>
@@ -32,25 +48,43 @@ const HistoryStack = () => {
           paddingRight: 15,
         })}
         className="p-4 bg-[#202020]"
-       >
-        <Stack>
-          {history.map((item) => {
-            return (
+      >
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead style={stickyHeaderStyle}>
+            <tr>
+              <th style={tableHeaderStyle}>Category</th>
+              <th style={tableHeaderStyle}>Label</th>
+              <th style={tableHeaderStyle}>Amount</th>
+              <th style={tableHeaderStyle}>Type</th>
+              <th style={tableHeaderStyle}>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {history.map((item) => (
               <HistoryItem
-                key={item.id}
-                id={item.id}
+                category={item.category}
                 label={item.label}
                 amount={item.amount}
                 type={item.type}
                 dateCreated={item.dateCreated}
-                category={item.category}
+                key={item.id}
+                id={item.id}
               />
-            );
-          })}
-        </Stack>
+            ))}
+          </tbody>
+        </table>
       </ScrollArea>
     </div>
   );
+};
+
+const tableHeaderStyle = {
+  padding: "12px 15px",
+  textAlign: "left",
+  fontSize: "16px",
+  fontWeight: "bold",
+  backgroundColor: "#333",
+  color: "#fff",
 };
 
 export default HistoryStack;

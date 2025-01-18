@@ -51,13 +51,14 @@ export function HistoryContextProvider({ children }: HistoryContextProps) {
 
   // Adds a history element for the specific user
   function addHistoryElementHandler(element: HistoryElement) {
-    var today = new Date();
-    var date =
-      today.getDate() +
-      "/" +
-      (today.getMonth() + 1) +
-      "/" +
-      today.getFullYear();
+    // var today = new Date();
+    // console.log(today);
+    // var date =
+    //   today.getDate() +
+    //   "/" +
+    //   (today.getMonth() + 1) +
+    //   "/" +
+    //   today.getFullYear();
     setHistory((prev: HistoryElement[]) => {
       return [
         {
@@ -65,7 +66,7 @@ export function HistoryContextProvider({ children }: HistoryContextProps) {
           amount: element.amount,
           type: element.type,
           id: element.id,
-          dateCreated: date,
+          dateCreated: element.dateCreated,
           category: element.category,
         },
         ...prev,

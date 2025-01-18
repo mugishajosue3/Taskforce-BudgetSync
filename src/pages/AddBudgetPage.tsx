@@ -1,3 +1,4 @@
+import React, {useState } from "react";
 import { Divider, Text } from "@mantine/core";
 import AddToBudget from "../components/AddToBudget";
 import SetBudget from "../components/SetBudget";
@@ -5,6 +6,7 @@ import PageContainer from "../layout/PageContainer";
 import { useContext } from "react";
 import ResetValueModal from "../components/ResetValueModal";
 import CategoriesContext from "../store/CategoriesContext";
+
 
 const AddBudgetPage = () => {
   const { getTotalAmount } = useContext(CategoriesContext);

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, TextInput } from "@mantine/core";
 import HistoryContext from "../store/HistoryContext";
 import CategoriesContext from "../store/CategoriesContext";
+import DatePicker from "./DatePicker";
 
 const AddToBudget = () => {
   const { addCategory } = useContext(CategoriesContext);
@@ -11,8 +12,17 @@ const AddToBudget = () => {
   const [label, setLabel] = useState("");
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  const handleDateChange = (date: string) => {
+    setSelectedDate(date); 
+  };
   return (
     <div>
+      <DatePicker
+        label="Choose a date:"
+        value={selectedDate}
+        onChange={handleDateChange}
+        />
       <TextInput
         onChange={(e) => setLabel(e.currentTarget.value)}
         mt={20}
@@ -52,7 +62,7 @@ const AddToBudget = () => {
               amount: value,
               id: crypto.randomUUID(),
               type: "Budget",
-              dateCreated: "",
+              dateCreated: selectedDate,
               category: "Budget",
             });
           }

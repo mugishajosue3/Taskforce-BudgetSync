@@ -20,9 +20,9 @@ const HistoryItem = ({
   category
 }: HistoryItemProps) => {
   const [opened, setOpened] = useState(false);
+
   // #69DB7C is green.4 and #FF8787 is red.4.
-  const color =
-    type === "Budget" || type === "Expenses Reset" ? "#69DB7C" : "#FF8787";
+  const color = type === "Budget" || type === "Expenses Reset" ? "#69DB7C" : "#FF8787";
 
   return (
     <>
@@ -36,31 +36,32 @@ const HistoryItem = ({
         id={id}
         category={category}
       />
-      <Card
-        shadow="sm"
-        style={{
-          height: "50px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderRight: `4px solid ${color}`,
-        }}
-        onClick={() => {
-          setOpened(true);
-        }}
-      >
-        <Text weight={500} size={15}>
-          {/* Truncate the label if its length exceeds 44 characters */}
-          {label.length > 44 ? label.slice(0, 44) + "..." : label}
-        </Text>
-        <Text size={15} color={color} weight={500}>
-          {/* Display the correct sign based on the type of transaction */}
-          {type === "Budget" || type === "Expenses Reset" ? "+" : "-"}$
-          {amount.toLocaleString("en-US")}
-        </Text>
-      </Card>
+      <tr onClick={() => setOpened(true)} style={tableRowStyle}>
+        <td style={tableCellStyle}>{category}</td>
+        <td style={tableCellStyle}>{label.length > 44 ? `${label.slice(0, 44)}...` : label}</td>
+        <td style={tableCellStyle}>
+          <Text color={color} weight={500}>
+            {type === "Budget" || type === "Expenses Reset" ? "+" : "-"}$
+            {amount.toLocaleString("en-US")}
+          </Text>
+        </td>
+        <td style={tableCellStyle}>{type}</td>
+        <td style={tableCellStyle}>{dateCreated}</td>
+      </tr>
     </>
   );
+};
+
+const tableRowStyle = {
+  cursor: "pointer",
+  borderBottom: "1px solid #ddd",
+  transition: "background-color 0.2s ease",
+};
+
+const tableCellStyle = {
+  padding: "12px 15px",
+  fontSize: "14px",
+  color: "#fff",
 };
 
 export default HistoryItem;

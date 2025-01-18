@@ -4,14 +4,26 @@ import { Button, TextInput } from "@mantine/core";
 import HistoryContext from "../store/HistoryContext";
 import CategoriesContext from "../store/CategoriesContext"
 
+      import DatePicker from "../components/DatePicker";
+      
+
 const SetBudget = () => {
   const { addHistoryElement } = useContext(HistoryContext);
   const { addCategory, getTotalAmount } = useContext(CategoriesContext);
 
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
+  const [selectedDate, setSelectedDate] = useState<string>("");
+  const handleDateChange = (date: string) => {
+    setSelectedDate(date); // Update selected date in dd/mm/yyyy format
+  };
   return (
     <div>
+      <DatePicker
+        label="Choose a date:"
+        value={selectedDate}
+        onChange={handleDateChange}
+      />
       <TextInput
         onChange={(e) => setValue(Number.parseFloat(e.currentTarget.value))}
         mt={20}
@@ -46,7 +58,7 @@ const SetBudget = () => {
               id: crypto.randomUUID(),
               amount: value,
               type: "Budget",
-              dateCreated: "", // dateCreated passes an empty string here as the actual date creation is handled in the addHisotyrElement function
+              dateCreated: selectedDate, 
               category: "Budget",
             });
           }
