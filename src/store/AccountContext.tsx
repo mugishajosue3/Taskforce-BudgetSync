@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 type Account = {
   id: string
-  type: 'Account A' | 'Account B' | 'Account C'
+  type: 'BK Account' | 'Equity Bank Account' | 'MOMO Account' | 'CASH'
   name: string
   users: number
 }

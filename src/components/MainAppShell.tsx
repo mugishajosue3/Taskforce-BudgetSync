@@ -53,6 +53,7 @@ const MainAppShell = () => {
     } else {
       setAccountType(type);
       localStorage.setItem("accountType", type);
+      window.location.reload();
     }
   };
 
@@ -131,20 +132,25 @@ const MainAppShell = () => {
                     </Button>
                   </Menu.Target>
                   <Menu.Dropdown>
-                    <Menu.Item onClick={() => handleAccountChange("Account A")}>
-                      Account A
+                    <Menu.Item
+                    fullWidth 
+                    onClick={() => handleAccountChange("BK Account")}>
+                      BK Account
                     </Menu.Item>
-                    <Menu.Item onClick={() => handleAccountChange("Account B")}>
-                      Account B
+                    <Menu.Item onClick={() => handleAccountChange("Equity Bank Account")}>
+                      Equity Bank Account
                     </Menu.Item>
-                    <Menu.Item onClick={() => handleAccountChange("Account C")}>
-                      Account C
+                    <Menu.Item onClick={() => handleAccountChange("MOMO Account")}>
+                      MOMO Account
+                    </Menu.Item>
+                    <Menu.Item onClick={() => handleAccountChange("CASH")}>
+                      CASH
                     </Menu.Item>
                     <Menu.Divider />
                     <Menu.Item
                       color="red"
                       onClick={() => handleAccountChange("Log out")}
-                    >
+                     >
                       Log out
                     </Menu.Item>
                   </Menu.Dropdown>
@@ -163,7 +169,7 @@ const MainAppShell = () => {
                     : theme.colors.gray[9],
                 fontSize: "25px",
               })}
-            >
+             >
               <div
                 style={{
                   display: "flex",

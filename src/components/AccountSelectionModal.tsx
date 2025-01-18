@@ -3,27 +3,37 @@ import { useNavigate } from "react-router-dom";
 import { useAccount } from "../store/AccountContext";
 import { Users, User, Baby } from "lucide-react";
 import { useState, useEffect } from "react";
-
+import Bk from '/bk.png'
+import Equity from '/equity.png'
+import Momo from '/momo.png'
+import Cash from '/cash.png'
 const accountTypes = [
   {
-    id: "solo",
-    title: "Account A",
-    description: "One user account",
-    icon: User,
+    id: "BK Account",
+    title: "BK Account",
+    description: "BK Transaction Managment",
+    icon: Bk,
     users: 1,
   },
   {
-    id: "duo",
-    title: "Account B",
-    description: "2 user accounts",
-    icon: Users,
+    id: "Equity Bank Account",
+    title: "Equity Bank Account",
+    description: "Equity Transaction Managment",
+    icon: Equity,
     users: 2,
   },
   {
-    id: "family",
-    title: "Account C",
-    description: "Six user accounts",
-    icon: Baby,
+    id: "MOMO Account",
+    title: "MOMO Account",
+    description: "Cell Phone Transaction Managment",
+    icon: Momo,
+    users: 6,
+  },
+  {
+    id: "CASH",
+    title: "CASH Account",
+    description: "CASH Account Managment",
+    icon: Cash,
     users: 6,
   },
 ];
@@ -47,19 +57,23 @@ export default function AccountSelectionModal() {
   const handleSelect = (type: string) => {
     const accountType = accountTypes.find((t) => t.id === type);
     setAccountType(type);
-    if (!accountType) return;
+    if (!accountType) {
+      return; // Exit if accountType is falsy
+    }
 
     const account = {
       id: crypto.randomUUID(),
-      type: accountType.title as 'Account A' | 'Account B' | 'Account C',
+      type: accountType.title as "BK Account" | "Equity Bank Account" | "MOMO Account" | "CASH",
       name: `${accountType.title}`,
       users: accountType.users,
     };
+    console.log("Account to be added:", account);
     addAccount(account);
+    window.location.reload();
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50"
       onClick={(e) => {
         // Close modal when clicking outside
@@ -91,7 +105,7 @@ export default function AccountSelectionModal() {
                   className="group relative rounded-lg border border-gray-300 dark:border-gray-600 p-6 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition"
                 >
                   <div className="space-y-2">
-                    <Icon className="h-6 w-6 text-gray-600 dark:text-gray-300" />
+                    <img src={type.icon} alt={type.title} className="object-cover" />
                     <h3 className="font-bold text-gray-800 dark:text-gray-100">
                       {type.title}
                     </h3>
@@ -100,7 +114,7 @@ export default function AccountSelectionModal() {
                     </p>
                   </div>
                 </button>
-              )
+              );
             })}
           </div>
         </div>
