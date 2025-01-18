@@ -1,11 +1,12 @@
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from "react-router-dom";
 import { Paper } from "@mantine/core";
 import { MantineProvider } from "@mantine/core";
 import MainAppShell from "./components/MainAppShell";
 import { AvailableCategoriesContextProvider } from "./store/AvailableCategoriesContext";
 import { CategoriesContextProvider } from "./store/CategoriesContext";
 import { HistoryContextProvider } from "./store/HistoryContext";
-import { AccountProvider } from './store/AccountContext';
+import { AccountProvider } from "./store/AccountContext";
+import { DateRangeProvider } from "./store/DateRangeContext";
 
 export default function App() {
   return (
@@ -19,13 +20,15 @@ export default function App() {
       <BrowserRouter>
         <AccountProvider>
           <Paper>
-            <AvailableCategoriesContextProvider>
-              <HistoryContextProvider>
-                <CategoriesContextProvider>
-                  <MainAppShell />
-                </CategoriesContextProvider>
-              </HistoryContextProvider>
-            </AvailableCategoriesContextProvider>
+            <DateRangeProvider>
+              <AvailableCategoriesContextProvider>
+                <HistoryContextProvider>
+                  <CategoriesContextProvider>
+                    <MainAppShell />
+                  </CategoriesContextProvider>
+                </HistoryContextProvider>
+              </AvailableCategoriesContextProvider>
+            </DateRangeProvider>
           </Paper>
         </AccountProvider>
       </BrowserRouter>

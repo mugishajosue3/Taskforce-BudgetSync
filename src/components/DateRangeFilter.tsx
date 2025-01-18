@@ -1,20 +1,25 @@
 import React, { useState } from "react";
-import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ReactDatePicker from "react-datepicker";
 import { format } from "date-fns";
+import { useDateRange } from "../store/DateRangeContext";
 
-type DateRangeFilterProps = {
-  onFilter: (fromDate: string, toDate: string) => void;
-};
+const DateRangeFilter: React.FC = () => {
+  const { setFromDate, setToDate } = useDateRange(); // Get context functions
+  const [fromDate, setLocalFromDate] = useState<Date | null>(null);
+  const [toDate, setLocalToDate] = useState<Date | null>(null);
 
-const DateRangeFilter: React.FC<DateRangeFilterProps> = ({ onFilter }) => {
-  const [fromDate, setFromDate] = useState<Date | null>(null);
-  const [toDate, setToDate] = useState<Date | null>(null);
+  // Function to handle date changes dynamically
+  const handleFromDateChange = (date: Date | null) => {
+    setLocalFromDate(date);
+    const formattedFromDate = date ? format(date, "dd/MM/yyyy") : "";
+    setFromDate(formattedFromDate); // Send updated value to context
+  };
 
-  const handleFilter = () => {
-    const formattedFromDate = fromDate ? format(fromDate, "dd/MM/yyyy") : "";
-    const formattedToDate = toDate ? format(toDate, "dd/MM/yyyy") : "";
-    onFilter(formattedFromDate, formattedToDate);
+  const handleToDateChange = (date: Date | null) => {
+    setLocalToDate(date);
+    const formattedToDate = date ? format(date, "dd/MM/yyyy") : "";
+    setToDate(formattedToDate); // Send updated value to context
   };
 
   return (
@@ -28,7 +33,7 @@ const DateRangeFilter: React.FC<DateRangeFilterProps> = ({ onFilter }) => {
           <ReactDatePicker
             id="from-date"
             selected={fromDate}
-            onChange={(date) => setFromDate(date)}
+            onChange={handleFromDateChange}
             dateFormat="dd/MM/yyyy"
             placeholderText="Select From Date"
             className="border p-2 rounded w-full"
@@ -41,19 +46,13 @@ const DateRangeFilter: React.FC<DateRangeFilterProps> = ({ onFilter }) => {
           <ReactDatePicker
             id="to-date"
             selected={toDate}
-            onChange={(date) => setToDate(date)}
+            onChange={handleToDateChange}
             dateFormat="dd/MM/yyyy"
             placeholderText="Select To Date"
             className="border p-2 rounded w-full"
           />
         </div>
       </div>
-      <button
-        onClick={handleFilter}
-        className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium"
-      >
-        Apply Filter
-      </button>
     </div>
   );
 };

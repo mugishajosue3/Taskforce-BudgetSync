@@ -8,6 +8,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import { ColorScheme } from "@mantine/core";
 import AccountSelectionModal from "../components/AccountSelectionModal";
 import DateRangeFilter from "../components/DateRangeFilter";
+import HistoryItem from "../components/HistoryItem";
 
 type HandleFilter = (fromDate: string, toDate: string) => void;
 
@@ -84,6 +85,14 @@ export default function HomePage() {
         const itemDate = new Date(item.dateCreated);
         return itemDate >= new Date(fromDate) && itemDate <= new Date(toDate);
       });
+      // <HistoryItem
+      // label={filteredData.label},
+      // amount={filteredData.amount}
+      // type={filteredData.type}
+      // id={filteredData.id}
+      // dateCreated={filteredData.dateCreated}
+      // category={filteredData.category}
+      //  />
       console.log("Filtered Data:", filteredData);
     };
 
