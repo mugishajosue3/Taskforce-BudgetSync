@@ -4,40 +4,36 @@ import HistoryContext from "../store/HistoryContext";
 import HistoryItem from "./HistoryItem";
 import { useContext } from "react";
 import { useDateRange } from "../store/DateRangeContext";
+import { Printer, Download } from "lucide-react";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
-// Ensure the dates are in a consistent format and parse correctly
 const convertToDate = (dateStr: string) => {
-  // Check if the date is in DD/MM/YYYY format and convert it to YYYY-MM-DD
   if (dateStr) {
     const [day, month, year] = dateStr.split("/");
-    return new Date(`${year}-${month}-${day}`); // Converts to YYYY-MM-DD format
+    return new Date(`${year}-${month}-${day}`);
   }
   return null;
 };
 
 const HistoryStack = () => {
   const [data, setData] = useState([]);
-  console.log("data", data);
   const { fromDate, toDate } = useDateRange();
   const { history } = useContext(HistoryContext);
 
   useEffect(() => {
     if (fromDate || toDate) {
-      // Convert the fromDate and toDate to proper Date objects
       const validFromDate = convertToDate(fromDate);
       const validToDate = convertToDate(toDate);
 
       const filteredData = history.filter((item) => {
-        // Convert item.dateCreated to proper Date object
         const itemDate = convertToDate(item.dateCreated);
 
-        // Validate the date conversion
         if (isNaN(itemDate.getTime())) {
           console.warn(`Invalid date for item with date: ${item.dateCreated}`);
           return false;
         }
 
-        // Check if itemDate is within the range
         const fromDateCondition = validFromDate
           ? itemDate >= validFromDate
           : true;
@@ -50,6 +46,45 @@ const HistoryStack = () => {
       setData(history);
     }
   }, [fromDate, toDate, history]);
+
+  const handlePrint = () => {
+    const printContent = document.getElementById('history-table');
+    const windowPrint = window.open('', '', 'width=900,height=650');
+    
+    windowPrint.document.write(`
+      <html>
+        <head>
+          <title>Transaction History</title>
+          <style>
+            table { width: 100%; border-collapse: collapse; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+            th { background-color: #333; color: white; }
+          </style>
+        </head>
+        <body>
+          ${printContent.outerHTML}
+        </body>
+      </html>
+    `);
+    
+    windowPrint.document.close();
+    windowPrint.focus();
+    windowPrint.print();
+    windowPrint.close();
+  };
+
+  const handleDownload = async () => {
+    const element = document.getElementById('history-table');
+    const canvas = await html2canvas(element);
+    const imgData = canvas.toDataURL('image/png');
+    
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save('transaction-history.pdf');
+  };
 
   const stickyHeaderStyle = {
     position: "sticky",
@@ -69,18 +104,35 @@ const HistoryStack = () => {
 
   return (
     <div className="bg-[#202020] p-4">
-      <Text
-        size="xl"
-        sx={(theme) => ({
-          color:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[0]
-              : theme.colors.gray[9],
-        })}
-        mb="md"
-      >
-        Transaction History
-      </Text>
+      <div className="flex justify-between items-center mb-4">
+        <Text
+          size="xl"
+          sx={(theme) => ({
+            color:
+              theme.colorScheme === "dark"
+                ? theme.colors.dark[0]
+                : theme.colors.gray[9],
+          })}
+        >
+          Transaction History
+        </Text>
+        <div className="flex gap-4">
+          <button 
+            onClick={handlePrint}
+            className="flex items-center gap-2 px-3 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            <Download size={18} />
+            Download Report 
+          </button>
+          {/* <button 
+            onClick={handleDownload}
+            className="flex items-center gap-2 px-3 py-2 rounded bg-green-600 hover:bg-green-700 text-white"
+          >
+            <Download size={18} />
+            Download PDF
+          </button> */}
+        </div>
+      </div>
       <Divider my="sm" />
       <ScrollArea
         type="always"
@@ -95,7 +147,7 @@ const HistoryStack = () => {
         })}
         className="p-4 bg-[#202020]"
       >
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <table id="history-table" style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead style={stickyHeaderStyle}>
             <tr>
               <th style={tableHeaderStyle}>Category</th>
@@ -133,15 +185,6 @@ const HistoryStack = () => {
       </ScrollArea>
     </div>
   );
-};
-
-const tableHeaderStyle = {
-  padding: "12px 15px",
-  textAlign: "left",
-  fontSize: "16px",
-  fontWeight: "bold",
-  backgroundColor: "#333",
-  color: "#fff",
 };
 
 export default HistoryStack;
