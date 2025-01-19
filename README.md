@@ -56,10 +56,25 @@ Useful Links:
 
 Feel free to use this refined version to present your project with a more engaging and user-friendly approach. Happy coding! 🌟
 
+## Home Page
+![Alt text](/public/homePage.png)
 
-### Explanation:
-- The image is referenced using Markdown syntax: `![Alt text](path-to-image)`.
-- Since `homePage.png` is in the `public` folder, the relative path to the image is `public/homePage.png`. 
-- The `Alt text` (which is optional) is used to describe the image for accessibility purposes.
+## Home Page Responsiveness
+![Alt text](/public/responsiveness.png)
 
-Now, when someone views your `README.md` file on GitHub or another platform that supports Markdown rendering, the image will appear as a preview of your app's homepage.
+## Adding/Setting/Updating Budget
+![Alt text](/public/addingBudget.png)
+
+## Adding Expense
+![Alt text](/public/addingExpense.png)
+
+## Categories Page
+![Alt text](/public/categories.png)
+
+## Filtering to Get Report from specified Date Range
+![Alt text](/public/firtering.png)
+
+## Downloaded Report As PDF
+![Alt text](/public/downloadedReport.png)
+
+
