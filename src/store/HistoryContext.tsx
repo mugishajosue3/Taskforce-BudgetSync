@@ -34,7 +34,7 @@ const HistoryContext = createContext<HistoryContextType>({
 export function HistoryContextProvider({ children }: HistoryContextProps) {
   // Use user ID to fetch history from localStorage for different accounts
   const userId = localStorage.getItem("accountType"); // Fetch current user's ID (you can store this when user logs in)
-  // console.log('user Id:' , userId)
+  // // console.log('user Id:' , userId)
 
   // If there's no userId, assign a default one (or handle user creation/login logic)
   const currentUserId = userId || "false"; 
@@ -52,7 +52,7 @@ export function HistoryContextProvider({ children }: HistoryContextProps) {
   // Adds a history element for the specific user
   function addHistoryElementHandler(element: HistoryElement) {
     // var today = new Date();
-    // console.log(today);
+    // // console.log(today);
     // var date =
     //   today.getDate() +
     //   "/" +

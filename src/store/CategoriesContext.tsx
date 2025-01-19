@@ -45,7 +45,7 @@ export function CategoriesContextProvider({
   children,
 }: CategoriesContextProps) {
   const userId = localStorage.getItem("accountType");
-  // console.log('accout type from context : ', userId)
+  // // console.log('accout type from context : ', userId)
   const [categories, setCategories] = useLocalStorage<Category[]>({
     key: `categories_${userId}`, 
     defaultValue: [],

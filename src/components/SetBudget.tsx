@@ -8,9 +8,9 @@ import CategoriesContext from "../store/CategoriesContext"
       
 
 const SetBudget = () => {
+  const [dateError, setDateError] = useState<string>("");
   const { addHistoryElement } = useContext(HistoryContext);
   const { addCategory, getTotalAmount } = useContext(CategoriesContext);
-
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState<string>("");
@@ -19,10 +19,14 @@ const SetBudget = () => {
   };
   return (
     <div>
-      <DatePicker
+     <DatePicker
         label="Choose a date:"
         value={selectedDate}
-        onChange={handleDateChange}
+        onChange={(date) => {
+          handleDateChange(date);
+          setDateError(""); // Clear error when date is selected
+        }}
+        error={dateError}
       />
       <TextInput
         onChange={(e) => setValue(Number.parseFloat(e.currentTarget.value))}
@@ -36,6 +40,11 @@ const SetBudget = () => {
       <Button
         mt={20}
         onClick={() => {
+          // Check if date is selected
+          if (!selectedDate) {
+            setDateError("Please select a date");
+            return;
+          }
           // checks that the user inputted valid values
           if (value <= 0 || Number.isNaN(value)) {
             alert("Invalid Entry. Make sure the amount is greater than zero.");

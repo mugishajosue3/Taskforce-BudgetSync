@@ -27,7 +27,7 @@ const HistoryStack = () => {
     defaultValue: "dark",
   });
 
-  console.log("theme : ", colorScheme)
+  // console.log("theme : ", colorScheme)
 
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const HistoryStack = () => {
   }, [fromDate, toDate, history]);
 
   const accountType = localStorage.getItem("accountType");
-  // console.log("Account Type:", accountType);
+  // // console.log("Account Type:", accountType);
 
   const handlePrint = () => {
     const printContent = document.getElementById('history-table');

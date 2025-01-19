@@ -10,7 +10,7 @@ const AddExpensePage = () => {
   // const expenses = getTotalAmount("Expenses");
   const budget = Number(getTotalAmount("Budget")) || 0;
   const expenses = Number(getTotalAmount("Expenses")) || 0;
-  console.log({budget, expenses})
+  // console.log({budget, expenses})
 
   return (
     <PageContainer>

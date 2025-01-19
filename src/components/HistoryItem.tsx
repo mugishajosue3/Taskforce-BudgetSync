@@ -27,7 +27,7 @@ const HistoryItem = ({
     defaultValue: "dark",
   });
 
-  console.log("color scheme : ", colorScheme)
+  // console.log("color scheme : ", colorScheme)
 
   // Determine background color based on the color scheme
   let bgColor;

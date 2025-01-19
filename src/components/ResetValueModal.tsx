@@ -24,7 +24,7 @@ const ResetValueModal = ({ type, prevAmount }: ResetValueModalProps) => {
 
   const navigate = useNavigate();
   const localStorageTheme = localStorage.getItem("theme")
-  console.log("local Storage Theme:", localStorageTheme)
+  // console.log("local Storage Theme:", localStorageTheme)
 
   return (
     <>

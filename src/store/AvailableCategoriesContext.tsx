@@ -31,7 +31,7 @@ export function AvailableCategoriesContextProvider({
 }: AvailableCategoriesContextProps) {
   // Get userId dynamically (this could come from login or session)
   const userId = localStorage.getItem("accountType");
-  console.log("User ID for multi-category files:", userId);
+  // console.log("User ID for multi-category files:", userId);
 
   // Dynamically set the localStorage key to include the userId
   const storageKey = `${userId}_multiSelectCategories`;

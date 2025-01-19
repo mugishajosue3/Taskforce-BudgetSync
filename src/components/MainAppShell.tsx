@@ -60,6 +60,13 @@ const MainAppShell = () => {
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
+  const handleNavigation = () => {
+    // Close sidebar on mobile when a link is clicked
+    if (window.innerWidth < theme.breakpoints.sm) {
+      setOpened(false);
+    }
+  };
+
   return (
     <ColorSchemeProvider
       colorScheme={colorScheme}
@@ -92,21 +99,25 @@ const MainAppShell = () => {
                 label="Home"
                 icon={<AiOutlineHome />}
                 link="/"
+                onNavigate={handleNavigation}
               />
               <NavigationLink
                 label="Add an Expense"
                 icon={<BsPlusCircle />}
                 link="/newExpense"
+                onNavigate={handleNavigation}
               />
               <NavigationLink
                 label="Add / Update Your Budget"
                 icon={<MdAttachMoney />}
                 link="/newBudget"
+                onNavigate={handleNavigation}
               />
               <NavigationLink
                 label="View Spending in Categories"
                 icon={<BsBarChartLine />}
                 link="/categories"
+                onNavigate={handleNavigation}
               />
 
               {/* Account Dropdown */}
@@ -178,6 +189,15 @@ const MainAppShell = () => {
                   height: "100%",
                 }}
               >
+                <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+                    <Burger
+                      opened={opened}
+                      onClick={() => setOpened((o) => !o)}
+                      size="sm"
+                      color={theme.colors.gray[6]}
+                      mr="xl"
+                    />
+                  </MediaQuery>
                 <div
                   style={{
                     display: "flex",
@@ -190,7 +210,10 @@ const MainAppShell = () => {
                     alt="budgetSync - Code of Africa GmbH Logo"
                     className="h-10 w-10"
                   />
-                  <Text ml={10}>budgetSync - Code of Africa GmbH</Text>
+                 <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center sm:text-left p-4 sm:p-6">
+  budgetSync - Code of Africa GmbH
+</h2>
+
                 </div>
                 <DarkLightThemeButton />
               </div>

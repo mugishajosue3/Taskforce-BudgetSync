@@ -31,19 +31,19 @@ export default function HomePage() {
 
   // Debug logging
   useEffect(() => {
-    console.group("Budget Information");
-    console.log("Raw Budget:", budget);
-    console.log("Raw Expenses:", expenses);
-    console.log("Raw Balance:", balance);
-    console.log("Formatted Budget:", formatAmount(budget));
-    console.log("Formatted Expenses:", formatAmount(expenses));
-    console.log("Formatted Balance:", formatAmount(balance));
+    // console.group("Budget Information");
+    // console.log("Raw Budget:", budget);
+    // console.log("Raw Expenses:", expenses);
+    // console.log("Raw Balance:", balance);
+    // console.log("Formatted Budget:", formatAmount(budget));
+    // console.log("Formatted Expenses:", formatAmount(expenses));
+    // console.log("Formatted Balance:", formatAmount(balance));
     console.groupEnd();
 
     const currentCategories = JSON.parse(
       localStorage.getItem(`categories_${accountType}`) || "[]"
     );
-    console.log("Categories from localStorage:", currentCategories);
+    // console.log("Categories from localStorage:", currentCategories);
   }, [budget, expenses, balance, accountType]);
 
   // Improved number formatting function
@@ -76,14 +76,14 @@ export default function HomePage() {
   const [data, setData] = useState(storedData ? JSON.parse(storedData) : []);
 
   // Example use of data
-  console.log(data);
+  // console.log(data);
 
   const handleFilter = (fromDate, toDate) => {
     const filteredData = data.filter((item) => {
       const itemDate = new Date(item.dateCreated);
       return itemDate >= new Date(fromDate) && itemDate <= new Date(toDate);
     });
-    console.log("Filtered Data:", filteredData);
+    // console.log("Filtered Data:", filteredData);
   };
 
   if (accountType === "false") {

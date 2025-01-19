@@ -1,26 +1,26 @@
-import { Group, Text, ThemeIcon, UnstyledButton } from "@mantine/core";
-import React from "react";
+// NavigationLink.tsx
+import { UnstyledButton } from "@mantine/core";
 import { Link } from "react-router-dom";
 
-type NavigationLinkProps = {
+interface NavigationLinkProps {
   label: string;
   icon: React.ReactNode;
   link: string;
-};
+  onNavigate?: () => void;
+}
 
-const NavigationLink = ({ icon, label, link }: NavigationLinkProps) => {
+const NavigationLink = ({ label, icon, link, onNavigate }: NavigationLinkProps) => {
   return (
     <UnstyledButton
       component={Link}
       to={link}
+      onClick={onNavigate}
       sx={(theme) => ({
         display: "block",
         width: "100%",
         padding: theme.spacing.xs,
         borderRadius: theme.radius.sm,
-        color:
-          theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-
+        color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
         "&:hover": {
           backgroundColor:
             theme.colorScheme === "dark"
@@ -29,12 +29,10 @@ const NavigationLink = ({ icon, label, link }: NavigationLinkProps) => {
         },
       })}
     >
-      <Group>
-        <ThemeIcon className="text-[4rem]" variant="light" style={{backgroundColor: "transparent"}}>
-          {icon}
-        </ThemeIcon>
-        <Text>{label}</Text>
-      </Group>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <span style={{ marginRight: 10 }}>{icon}</span>
+        <span>{label}</span>
+      </div>
     </UnstyledButton>
   );
 };

@@ -67,7 +67,7 @@ export default function AccountSelectionModal() {
       name: `${accountType.title}`,
       users: accountType.users,
     };
-    console.log("Account to be added:", account);
+    // console.log("Account to be added:", account);
     addAccount(account);
     window.location.reload();
   };

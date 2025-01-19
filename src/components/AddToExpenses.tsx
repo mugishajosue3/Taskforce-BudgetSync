@@ -14,6 +14,7 @@ type AvailableCategories = {
 };
 
 const AddToExpenses = () => {
+  const [dateError, setDateError] = useState<string>("");
   const { addHistoryElement } = useContext(HistoryContext);
   const { availableCategories, setAvailableCategories } = useContext(
     AvailableCategoriesContext
@@ -34,7 +35,7 @@ const AddToExpenses = () => {
   const budget = Number(getTotalAmount("Budget")) || 0;
   const expenses = Number(getTotalAmount("Expenses")) || 0;
   const RemainingBudget = budget - expenses;
-  console.log({RemainingBudget})
+  // console.log({ RemainingBudget });
 
   const predefinedCategories = [
     { value: "food", label: "Food & Dining", isused: "false" },
@@ -65,7 +66,20 @@ const AddToExpenses = () => {
       >
         Add a Category to Your Expense
       </Text> */}
-      <DatePicker label="Choose a date:" value={selectedDate} onChange={handleDateChange} />
+      {/* <DatePicker
+        label="Choose a date:"
+        value={selectedDate}
+        onChange={handleDateChange}
+      /> */}
+      <DatePicker
+        label="Choose a date:"
+        value={selectedDate}
+        onChange={(date) => {
+          handleDateChange(date);
+          setDateError(""); // Clear error when date is selected
+        }}
+        error={dateError}
+      />
       <MultiSelect
         w="40%"
         mt={10}
@@ -89,7 +103,7 @@ const AddToExpenses = () => {
             isused: "false",
           };
 
-          console.log("New category created:", newCategory);
+          // console.log("New category created:", newCategory);
           setAvailableCategories((current) => [newCategory, ...current]);
           return newCategory;
         }}
@@ -119,7 +133,7 @@ const AddToExpenses = () => {
         label="Specify Sub-Category"
         withAsterisk
       />
-      
+
       <TextInput
         onChange={(e) => setValue(Number.parseFloat(e.currentTarget.value))}
         mt={20}
@@ -129,48 +143,58 @@ const AddToExpenses = () => {
         label="Amount"
         withAsterisk
       />
-     {isExceedingBudget && ( <p className="text-red-400"                                  > Amount Exceeds Current Budget! </p> ) }
+      {isExceedingBudget && (
+        <p className="text-red-400"> Amount Exceeds Current Budget! </p>
+      )}
 
       <div style={{ display: "flex", alignItems: "center", marginTop: 20 }}>
         <Button
           mr={30}
           onClick={() => {
+            // Check if date is selected
+            if (!selectedDate) {
+              setDateError("Please select a date");
+              return;
+            }
+
             if (label === "" || value <= 0 || Number.isNaN(value)) {
               alert(
                 "Invalid Entries. Make sure the label is not empty and the amount is greater than zero."
               );
-            } else {
-              category[0] === undefined || category[0] === null || category[0] === ""
-                ? (category[0] = "Uncategorized")
-                : null;
-
-              addCategory({
-                label: category[0],
-                amount: value,
-                id: crypto.randomUUID(),
-              });
-
-              setAvailableCategories((prev) => {
-                return prev.map((c) => {
-                  if (c.label === category[0]) {
-                    c.isused = "true";
-                  }
-                  return c;
-                });
-              });
-
-              navigate("/");
-              addHistoryElement({
-                label: label,
-                amount: value,
-                id: crypto.randomUUID(),
-                type: "Expense",
-                dateCreated: selectedDate,
-                category: category[0],
-              });
+              return;
             }
+
+            // If category is empty, set to "Uncategorized"
+            const finalCategory = category[0] || "Uncategorized";
+
+            // Add the expense
+            addCategory({
+              label: finalCategory,
+              amount: value,
+              id: crypto.randomUUID(),
+            });
+
+            // Update categories
+            setAvailableCategories((prev) =>
+              prev.map((c) => ({
+                ...c,
+                isused: c.label === finalCategory ? "true" : c.isused,
+              }))
+            );
+
+            // Add to history
+            addHistoryElement({
+              label: label,
+              amount: value,
+              id: crypto.randomUUID(),
+              type: "Expense",
+              dateCreated: selectedDate,
+              category: finalCategory,
+            });
+
+            navigate("/");
           }}
-          disabled={isExceedingBudget} // Disable the button if the input exceeds the remaining budget
+          disabled={isExceedingBudget}
         >
           Add Expense
         </Button>
