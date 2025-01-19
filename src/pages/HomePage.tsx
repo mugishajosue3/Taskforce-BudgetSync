@@ -12,8 +12,6 @@ import HistoryItem from "../components/HistoryItem";
 
 type HandleFilter = (fromDate: string, toDate: string) => void;
 
-
-
 export default function HomePage() {
   const { getTotalAmount } = useContext(CategoriesContext);
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -72,29 +70,29 @@ export default function HomePage() {
     }
   };
 
-    const storedData = localStorage.getItem(`${accountType}_History`);
+  const storedData = localStorage.getItem(`${accountType}_History`);
 
-    // Parse and set the data
-    const [data, setData] = useState(storedData ? JSON.parse(storedData) : []);
+  // Parse and set the data
+  const [data, setData] = useState(storedData ? JSON.parse(storedData) : []);
 
-    // Example use of data
-    console.log(data);
+  // Example use of data
+  console.log(data);
 
-    const handleFilter = (fromDate, toDate) => { 
-      const filteredData = data.filter(item => {
-        const itemDate = new Date(item.dateCreated);
-        return itemDate >= new Date(fromDate) && itemDate <= new Date(toDate);
-      });
-      // <HistoryItem
-      // label={filteredData.label},
-      // amount={filteredData.amount}
-      // type={filteredData.type}
-      // id={filteredData.id}
-      // dateCreated={filteredData.dateCreated}
-      // category={filteredData.category}
-      //  />
-      console.log("Filtered Data:", filteredData);
-    };
+  const handleFilter = (fromDate, toDate) => {
+    const filteredData = data.filter((item) => {
+      const itemDate = new Date(item.dateCreated);
+      return itemDate >= new Date(fromDate) && itemDate <= new Date(toDate);
+    });
+    // <HistoryItem
+    // label={filteredData.label},
+    // amount={filteredData.amount}
+    // type={filteredData.type}
+    // id={filteredData.id}
+    // dateCreated={filteredData.dateCreated}
+    // category={filteredData.category}
+    //  />
+    console.log("Filtered Data:", filteredData);
+  };
 
   if (accountType === "false") {
     return <AccountSelectionModal />;
@@ -138,13 +136,6 @@ export default function HomePage() {
           >
             Total Balance
           </span>
-          <button
-            className={`${
-              colorScheme === "light" ? "text-black" : "text-white/80/60"
-            }`}
-          >
-            <DateRangeFilter onFilter={handleFilter} />
-          </button>
         </div>
 
         {/* Balance Display */}
@@ -240,7 +231,15 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Charts and History Section */}
+      <div
+        className={`w-full  rounded-lg shadow-md my-4 ${
+          colorScheme === "light" ? "text-black" : "text-white/80/60"
+        }`}
+      >
+        <DateRangeFilter onFilter={handleFilter} />
+      </div>
+
+      {/* History and Charts Section */}
       <div className="grid lg:grid-cols-2 gap-6">
         <div
           className={`rounded-2xl border border-gray-200 p-4 shadow-sm ${

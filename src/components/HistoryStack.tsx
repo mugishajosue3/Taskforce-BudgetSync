@@ -7,6 +7,8 @@ import { useDateRange } from "../store/DateRangeContext";
 import { Printer, Download } from "lucide-react";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { useLocalStorage } from "@mantine/hooks";
+import { ColorScheme } from "@mantine/core";
 
 const convertToDate = (dateStr: string) => {
   if (dateStr) {
@@ -20,6 +22,13 @@ const HistoryStack = () => {
   const [data, setData] = useState([]);
   const { fromDate, toDate } = useDateRange();
   const { history } = useContext(HistoryContext);
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: "theme",
+    defaultValue: "dark",
+  });
+
+  console.log("theme : ", colorScheme)
+
 
   useEffect(() => {
     if (fromDate || toDate) {
@@ -96,40 +105,48 @@ const HistoryStack = () => {
     zIndex: 1,
   };
 
+  let color;
+
+  if(colorScheme === "light") {
+    color = "gray";
+  } else {
+    color = "#202020";
+  }
   const tableHeaderStyle = {
     padding: "12px 15px",
     textAlign: "left",
     fontSize: "16px",
     fontWeight: "bold",
-    backgroundColor: "#333",
+    backgroundColor: color,
     color: "#fff",
   };
 
   return (
-    <div className="bg-[#202020] p-4">
+    <div className={`p-4 ${colorScheme === "dark" ? "text-white" : "text-gray-800"}`}>
       <div className="flex justify-between items-center mb-4">
         <Text
           size="xl"
-          sx={(theme) => ({
-            color:
-              theme.colorScheme === "dark"
-                ? theme.colors.dark[0]
-                : theme.colors.gray[9],
-          })}
+          // sx={(theme) => ({
+          //   color:
+          //     theme.colorScheme === "dark"
+          //       ? theme.colors.dark[0]
+          //       : theme.colors.gray[9],
+          // })}
         >
           Transaction History
         </Text>
         <div className="flex gap-4">
+
           <button 
             onClick={handlePrint}
-            className="flex items-center gap-2 px-3 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white"
+            className="flex items-center gap-2 px-3 py-2 rounded bg-green-600 hover:bg-green-700"
           >
             <Download size={18} />
             Download Report 
           </button>
           {/* <button 
             onClick={handleDownload}
-            className="flex items-center gap-2 px-3 py-2 rounded bg-green-600 hover:bg-green-700 text-white"
+            className="flex items-center gap-2 px-3 py-2 rounded "
           >
             <Download size={18} />
             Download PDF
@@ -147,16 +164,19 @@ const HistoryStack = () => {
           height: 300,
           width: "100%",
           paddingRight: 15,
+          overflowX: "auto", // Horizontal scroll
+    overflowY: "auto", // Vertical scroll
         })}
-        className="p-4 bg-[#202020]"
-      >
-        <table id="history-table" style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead style={stickyHeaderStyle}>
+        className={`${colorScheme === "dark" ? "bg-transparent" : ""}`}
+  
+       >
+        <table id="history-table" style={{ width: "100%", borderCollapse: "collapse" }} className="w-1/2">
+          <thead className="bg-transparent" style={stickyHeaderStyle}>
             <tr>
-              <th style={tableHeaderStyle}>Category</th>
+              <th style={tableHeaderStyle} className="hidden md:table-cell">Category</th>
               <th style={tableHeaderStyle}>Label</th>
               <th style={tableHeaderStyle}>Amount</th>
-              <th style={tableHeaderStyle}>Type</th>
+              <th style={tableHeaderStyle} className="hidden md:table-cell">Type</th>
               <th style={tableHeaderStyle}>Date</th>
             </tr>
           </thead>

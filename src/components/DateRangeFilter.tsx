@@ -3,11 +3,17 @@ import "react-datepicker/dist/react-datepicker.css";
 import ReactDatePicker from "react-datepicker";
 import { format } from "date-fns";
 import { useDateRange } from "../store/DateRangeContext";
+import { useLocalStorage } from "@mantine/hooks";
+import { ColorScheme } from "@mantine/core";
 
 const DateRangeFilter: React.FC = () => {
   const { setFromDate, setToDate } = useDateRange(); // Get context functions
   const [fromDate, setLocalFromDate] = useState<Date | null>(null);
   const [toDate, setLocalToDate] = useState<Date | null>(null);
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+      key: "theme",
+      defaultValue: "dark",
+    });
 
   // Function to handle date changes dynamically
   const handleFromDateChange = (date: Date | null) => {
@@ -23,11 +29,11 @@ const DateRangeFilter: React.FC = () => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md space-y-4 max-w-md">
-      <h2 className="text-lg font-semibold text-gray-700">Filter by Date</h2>
-      <div className="space-y-2">
-        <div>
-          <label htmlFor="from-date" className="block text-sm font-medium text-gray-600">
+    <div className={`p-4 space-y-4 rounded-lg max-w-full ${colorScheme === "dark" ? "border border-black/5 bg-black/5" : "white"}`}>
+      <h2 className={`text-lg font-semibold ${colorScheme === "dark" ? "white" : "text-gray-700"}`}>Filter by Date</h2>
+      <div className="space-y-2 gap-6 flex flex-cols-2">
+        <div className="mt-2 w-1/2">
+          <label htmlFor="from-date" className={`block text-sm font-medium text-start ${colorScheme === "dark" ? "text-white" : "text-gray-600"}`}>
             From Date:
           </label>
           <ReactDatePicker
@@ -39,9 +45,9 @@ const DateRangeFilter: React.FC = () => {
             className="border p-2 rounded w-full"
           />
         </div>
-        <div>
-          <label htmlFor="to-date" className="block text-sm font-medium text-gray-600">
-            To Date:
+        <div className="w-1/2">
+          <label htmlFor="from-date" className={`block text-sm font-medium text-start ${colorScheme === "dark" ? "text-white" : "text-gray-600"}`}>
+          To Date:
           </label>
           <ReactDatePicker
             id="to-date"
@@ -49,7 +55,7 @@ const DateRangeFilter: React.FC = () => {
             onChange={handleToDateChange}
             dateFormat="dd/MM/yyyy"
             placeholderText="Select To Date"
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${colorScheme === "dark" ? "" : ""}`}
           />
         </div>
       </div>

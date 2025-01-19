@@ -23,6 +23,8 @@ const ResetValueModal = ({ type, prevAmount }: ResetValueModalProps) => {
   const { setAvailableCategories } = useContext(AvailableCategoriesContext);
 
   const navigate = useNavigate();
+  const localStorageTheme = localStorage.getItem("theme")
+  console.log("local Storage Theme:", localStorageTheme)
 
   return (
     <>
