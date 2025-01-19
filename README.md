@@ -1,10 +1,10 @@
-# BudgetSync: Overview
+# budgetSync - Code of Africa GmbH: Overview
 
-Welcome to BudgetSync, your go-to solution for seamless expense tracking and financial management, designed with a user-friendly interface to keep you engaged and excited.
+Welcome to budgetSync - Code of Africa GmbH, your go-to solution for seamless expense tracking and financial management, designed with a user-friendly interface to keep you engaged and excited.
 
 ## Deployment
 This app is deployed using Netlify.
-Access the app here: [BudgetSync](https://BudgetSync)
+Access the app here: [budgetSync - Code of Africa GmbH](https://budgetSync - Code of Africa GmbH)
 
 ## Motivation Behind the Project 
 As a university student, keeping track of my expenses is crucial. Many expense-tracking websites and apps either lack functionality or appeal. I aimed to create an expense-tracking app that excels in both. This project also provided an opportunity to learn and implement the Mantine UI library.
@@ -50,7 +50,7 @@ Useful Links:
 - Plan to learn Redux for state management.
 - Explore other UI libraries such as Material UI and Chakra UI.
 - Make the app mobile responsive using CSS media queries or TailwindCSS.
-- Add a backend to BudgetSync, using a database (most likely MongoDB) to store data instead of local storage.
+- Add a backend to budgetSync - Code of Africa GmbH, using a database (most likely MongoDB) to store data instead of local storage.
 
 ---
 

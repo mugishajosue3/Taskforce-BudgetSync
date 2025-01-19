@@ -83,14 +83,6 @@ export default function HomePage() {
       const itemDate = new Date(item.dateCreated);
       return itemDate >= new Date(fromDate) && itemDate <= new Date(toDate);
     });
-    // <HistoryItem
-    // label={filteredData.label},
-    // amount={filteredData.amount}
-    // type={filteredData.type}
-    // id={filteredData.id}
-    // dateCreated={filteredData.dateCreated}
-    // category={filteredData.category}
-    //  />
     console.log("Filtered Data:", filteredData);
   };
 
@@ -105,21 +97,28 @@ export default function HomePage() {
       } p-6`}
     >
       {/* Header Section */}
-      <div className="mb-8">
+      <div className="mb-8 relative">
         <h1
           className={`text-lg ${
             colorScheme === "light" ? "text-black" : "text-white/80/90"
           }`}
         >
-          Good afternoon,
+          Hello 👋,
         </h1>
         <h2
           className={`font-semibold text-2xl ${
             colorScheme === "light" ? "text-black" : "text-white/80"
           }`}
         >
-          Enjelin Morgeana
+          Eric
         </h2>
+        <h1
+          className={`absolute top-0 right-0 font-semibold text-xl ${
+            colorScheme === "light" ? "text-black" : "text-white/80"
+          }`}
+        >
+          {accountType}
+        </h1>
       </div>
 
       {/* Balance Card */}

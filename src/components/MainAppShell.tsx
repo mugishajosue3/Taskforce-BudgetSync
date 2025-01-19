@@ -187,10 +187,10 @@ const MainAppShell = () => {
                 >
                   <img
                     src="/icons8-calculator-64.png"
-                    alt="BudgetSync Logo"
+                    alt="budgetSync - Code of Africa GmbH Logo"
                     className="h-10 w-10"
                   />
-                  <Text ml={10}>BudgetSync</Text>
+                  <Text ml={10}>budgetSync - Code of Africa GmbH</Text>
                 </div>
                 <DarkLightThemeButton />
               </div>

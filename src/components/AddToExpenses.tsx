@@ -29,6 +29,12 @@ const AddToExpenses = () => {
   const handleDateChange = (date: string) => {
     setSelectedDate(date); // Update selected date in dd/mm/yyyy format
   };
+  const { getTotalAmount } = useContext(CategoriesContext);
+  // const expenses = getTotalAmount("Expenses");
+  const budget = Number(getTotalAmount("Budget")) || 0;
+  const expenses = Number(getTotalAmount("Expenses")) || 0;
+  const RemainingBudget = budget - expenses;
+  console.log({RemainingBudget})
 
   const predefinedCategories = [
     { value: "food", label: "Food & Dining", isused: "false" },
@@ -42,6 +48,8 @@ const AddToExpenses = () => {
     { value: "rent", label: "Rent & Housing", isused: "false" },
     { value: "insurance", label: "Insurance", isused: "false" },
   ];
+  // Dynamically checking if the input value exceeds the remaining budget
+  const isExceedingBudget = value > RemainingBudget;
 
   return (
     <div>
@@ -105,22 +113,23 @@ const AddToExpenses = () => {
       <TextInput
         onChange={(e) => setLabel(e.currentTarget.value)}
         mt={20}
-        size="md"
+        size="sm"
         w="40%"
         placeholder="Ex: Car payments"
-        label="Specify SubCategory"
+        label="Specify Sub-Category"
         withAsterisk
       />
+      
       <TextInput
         onChange={(e) => setValue(Number.parseFloat(e.currentTarget.value))}
         mt={20}
-        size="md"
+        size="sm"
         w="40%"
         placeholder="Ex: 3000"
         label="Amount"
         withAsterisk
       />
-      {/* <Divider mt={30} mb={20} /> */}
+     {isExceedingBudget && ( <p className="text-red-400"                                  > Amount Exceeds Current Budget! </p> ) }
 
       <div style={{ display: "flex", alignItems: "center", marginTop: 20 }}>
         <Button
@@ -131,19 +140,17 @@ const AddToExpenses = () => {
                 "Invalid Entries. Make sure the label is not empty and the amount is greater than zero."
               );
             } else {
-              // if the user does not select a category while creating his expense, set category equal to 'Uncatigorized'
-              category[0] === undefined ||
-              category[0] === null ||
-              category[0] === ""
+              category[0] === undefined || category[0] === null || category[0] === ""
                 ? (category[0] = "Uncategorized")
                 : null;
+
               addCategory({
                 label: category[0],
                 amount: value,
                 id: crypto.randomUUID(),
               });
+
               setAvailableCategories((prev) => {
-                // set the isused property of the available category selected to true
                 return prev.map((c) => {
                   if (c.label === category[0]) {
                     c.isused = "true";
@@ -151,7 +158,7 @@ const AddToExpenses = () => {
                   return c;
                 });
               });
-              // navigate back to the home page
+
               navigate("/");
               addHistoryElement({
                 label: label,
@@ -163,6 +170,7 @@ const AddToExpenses = () => {
               });
             }
           }}
+          disabled={isExceedingBudget} // Disable the button if the input exceeds the remaining budget
         >
           Add Expense
         </Button>
