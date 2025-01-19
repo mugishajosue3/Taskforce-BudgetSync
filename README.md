@@ -55,3 +55,11 @@ Useful Links:
 ---
 
 Feel free to use this refined version to present your project with a more engaging and user-friendly approach. Happy coding! 🌟
+
+
+### Explanation:
+- The image is referenced using Markdown syntax: `![Alt text](path-to-image)`.
+- Since `homePage.png` is in the `public` folder, the relative path to the image is `public/homePage.png`. 
+- The `Alt text` (which is optional) is used to describe the image for accessibility purposes.
+
+Now, when someone views your `README.md` file on GitHub or another platform that supports Markdown rendering, the image will appear as a preview of your app's homepage.
