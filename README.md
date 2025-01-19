@@ -56,8 +56,10 @@ Useful Links:
 
 Feel free to use this refined version to present your project with a more engaging and user-friendly approach. Happy coding! 🌟
 
-## Home Page
+## Home Page (Dark Mode and Light Mode)
 ![Alt text](/public/homePage.png)
+![Alt text](/public/image.png)
+
 
 ## Home Page Responsiveness
 ![Alt text](/public/responsiveness.png)
