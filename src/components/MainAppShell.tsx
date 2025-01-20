@@ -24,13 +24,21 @@ import AccountSelectionModal from "./AccountSelectionModal";
 import { ErrorBoundary } from "react-error-boundary";
 import { FallbackProps } from 'react-error-boundary';
 
-// Lazy load pages
+// Lazy load pages (unchanged)
 const HomePage = lazy(() => import("../pages/HomePage"));
 const AddBudgetPage = lazy(() => import("../pages/AddBudgetPage"));
 const AddExpensePage = lazy(() => import("../pages/AddExpensePage"));
 const DisplayCategoriesPage = lazy(() => import("../pages/DisplayCategoriesPage"));
 
-// Error Fallback Component
+// Default account types
+const defaultAccounts = [
+  "BK Account",
+  "Equity Bank Account",
+  "MOMO Account",
+  "CASH"
+];
+
+// Error Fallback Component (unchanged)
 const ErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
   return (
     <div role="alert" style={{ padding: '20px', textAlign: 'center' }}>
@@ -42,7 +50,6 @@ const ErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
 };
 
 const MainAppShell = () => {
-  // Theme and layout hooks
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -50,10 +57,9 @@ const MainAppShell = () => {
     defaultValue: "dark",
   });
 
-  // Account management hooks
   const [accountType, setAccountType] = useState<string>("");
+  const [availableAccounts, setAvailableAccounts] = useState<string[]>(defaultAccounts);
 
-  // Callbacks
   const toggleColorScheme = useCallback(
     (value?: ColorScheme) =>
       setColorScheme(value || (colorScheme === "dark" ? "light" : "dark")),
@@ -81,7 +87,39 @@ const MainAppShell = () => {
     handleAccountChange("Log out");
   }, [handleAccountChange]);
 
-  // Effects
+  // Load accounts from localStorage
+  useEffect(() => {
+    const loadAccounts = () => {
+      try {
+        const userAccounts = JSON.parse(localStorage.getItem("user-accounts")) || [];
+        const currentAccount = JSON.parse(localStorage.getItem("current-account"));
+        
+        // Create a Set to store unique account names
+        const uniqueAccounts = new Set(defaultAccounts);
+        
+        // Add user accounts
+        userAccounts.forEach((account: any) => {
+          if (account.name) {
+            uniqueAccounts.add(account.name);
+          }
+        });
+        
+        // Add current account if it exists
+        if (currentAccount?.name) {
+          uniqueAccounts.add(currentAccount.name);
+        }
+        
+        setAvailableAccounts(Array.from(uniqueAccounts));
+      } catch (error) {
+        console.error("Error loading accounts:", error);
+        setAvailableAccounts(defaultAccounts);
+      }
+    };
+
+    loadAccounts();
+  }, []);
+
+  // Load current account type
   useEffect(() => {
     const storedAccountType = localStorage.getItem("accountType");
     if (storedAccountType) {
@@ -99,7 +137,6 @@ const MainAppShell = () => {
     <ErrorBoundary
       FallbackComponent={ErrorFallback}
       onReset={() => {
-        // Reset the state here
         setAccountType("");
       }}
     >
@@ -126,6 +163,7 @@ const MainAppShell = () => {
                 hidden={!opened}
                 width={{ sm: 250, lg: 350 }}
               >
+                {/* Navigation Links (unchanged) */}
                 <NavigationLink
                   label="Home"
                   icon={<AiOutlineHome />}
@@ -153,7 +191,7 @@ const MainAppShell = () => {
 
                 <div
                   style={{
-                    marginTop: "auto",
+                    marginTop: "70px",
                     borderTop: `1px solid ${
                       theme.colorScheme === "dark"
                         ? theme.colors.dark[4]
@@ -163,26 +201,20 @@ const MainAppShell = () => {
                   }}
                 >
                   <Menu>
-                    <Menu.Target>
-                      <Button fullWidth variant="outline" color="gray">
-                        {accountType}
+                    <Menu.Target className="flex flex-col items-center justify-center">
+                      <Button className="w-40" variant="outline" color="gray">
+                        {accountType.replace(/"/g, "")}
                       </Button>
                     </Menu.Target>
                     <Menu.Dropdown>
-                      <Menu.Item onClick={() => handleAccountChange("BK Account")}>
-                        BK Account
-                      </Menu.Item>
-                      <Menu.Item
-                        onClick={() => handleAccountChange("Equity Bank Account")}
-                      >
-                        Equity Bank Account
-                      </Menu.Item>
-                      <Menu.Item onClick={() => handleAccountChange("MOMO Account")}>
-                        MOMO Account
-                      </Menu.Item>
-                      <Menu.Item onClick={() => handleAccountChange("CASH")}>
-                        CASH
-                      </Menu.Item>
+                      {availableAccounts.map((account) => (
+                        <Menu.Item 
+                          key={account}
+                          onClick={() => handleAccountChange(account)}
+                        >
+                          {account}
+                        </Menu.Item>
+                      ))}
                       <Menu.Divider />
                       <Menu.Item onClick={handleLogout}>Logout</Menu.Item>
                     </Menu.Dropdown>

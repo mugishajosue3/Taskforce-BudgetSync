@@ -1,11 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useLocalStorage } from "@mantine/hooks"
 
 type Account = {
   id: string
-  type: 'BK Account' | 'Equity Bank Account' | 'MOMO Account' | 'CASH'
+  type: 'BK Account' | 'Equity Bank Account' | 'MOMO Account' | 'CASH' | 'Custom Account'
   name: string
+  description?: string
   users: number
+  profilePicture?: string
 }
 
 type AccountContextType = {
@@ -20,23 +23,38 @@ type AccountContextType = {
 const AccountContext = createContext<AccountContextType | null>(null)
 
 export function AccountProvider({ children }: { children: React.ReactNode }) {
-  const [currentAccount, setCurrentAccount] = useState<Account | null>(null)
-  const [accounts, setAccounts] = useState<Account[]>([])
-  const [showModal, setShowModal] = useState(true) // Start with modal visible
+  // Maintain both storage patterns
+  const [accountType, setAccountType] = useLocalStorage({
+    key: 'accountType',
+    defaultValue: 'false'
+  });
+
+  const [accounts, setAccounts] = useLocalStorage<Account[]>({
+    key: 'user-accounts',
+    defaultValue: []
+  });
+
+  const [currentAccount, setCurrentAccount] = useLocalStorage<Account | null>({
+    key: 'current-account',
+    defaultValue: null
+  });
+
+  const [showModal, setShowModal] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Show modal if no account is selected
     if (!currentAccount) {
       setShowModal(true)
     }
   }, [currentAccount])
 
   const addAccount = (account: Account) => {
+    // Update both storage patterns
+    setAccountType(account.type)
     setAccounts(prev => [...prev, account])
     setCurrentAccount(account)
-    setShowModal(false) // Hide modal after account selection
-    navigate('/')
+    setShowModal(false)
+    window.location.reload() // Maintain the previous behavior of page reload
   }
 
   return (

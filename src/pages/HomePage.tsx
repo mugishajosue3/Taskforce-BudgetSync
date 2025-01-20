@@ -45,7 +45,7 @@ export default function HomePage() {
 
   // Improved number formatting function
   //const formatAmount = (amount) => {
-    const formatAmount = (amount: number): string => {
+  const formatAmount = (amount: number): string => {
     try {
       // Ensure amount is a number and handle negative values
       const numAmount = Number(amount);
@@ -78,12 +78,12 @@ export default function HomePage() {
   // console.log(data);
 
   //const handleFilter = (fromDate, toDate) => {
-    const handleFilter = (fromDate: string, toDate: string): void => {
+  const handleFilter = (fromDate: string, toDate: string): void => {
     //const filteredData = data.filter((item) => {
-      const filteredData = data.filter((item: FilterData) => {
+    const filteredData = data.filter((item: FilterData) => {
       const itemDate = new Date(item.dateCreated);
       //return itemDate >= new Date(fromDate) && itemDate <= new Date(toDate);
-        return true;
+      return true;
     });
     // console.log("Filtered Data:", filteredData);
   };
@@ -119,7 +119,7 @@ export default function HomePage() {
             colorScheme === "light" ? "text-black" : "text-white/80"
           }`}
         >
-          {accountType}
+          {accountType.replace(/"/g, "")}
         </h1>
       </div>
 

@@ -36,6 +36,18 @@ const SetBudget = () => {
         placeholder="Ex: 5000"
         label="Enter your budget"
         withAsterisk
+        className="w-full"
+            styles={(theme) => ({
+              root: {
+                width: '100%',
+              },
+              input: {
+                width: '100%',
+                '&:focus': {
+                  borderColor: theme.colors.blue[5],
+                },
+              },
+            })}
       />
       <Button
         mt={20}

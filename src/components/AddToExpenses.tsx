@@ -22,20 +22,19 @@ const AddToExpenses = () => {
   const { addCategory } = useContext(CategoriesContext);
   const [label, setLabel] = useState("");
   const [value, setValue] = useState(0);
-
   const [category, setCategory] = useState<string[]>([""]);
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   const handleDateChange = (date: string) => {
-    setSelectedDate(date); // Update selected date in dd/mm/yyyy format
+    setSelectedDate(date);
+    setDateError("");
   };
+
   const { getTotalAmount } = useContext(CategoriesContext);
-  // const expenses = getTotalAmount("Expenses");
   const budget = Number(getTotalAmount("Budget")) || 0;
   const expenses = Number(getTotalAmount("Expenses")) || 0;
   const RemainingBudget = budget - expenses;
-  // console.log({ RemainingBudget });
 
   const predefinedCategories = [
     { value: "food", label: "Food & Dining", isused: "false" },
@@ -49,100 +48,131 @@ const AddToExpenses = () => {
     { value: "rent", label: "Rent & Housing", isused: "false" },
     { value: "insurance", label: "Insurance", isused: "false" },
   ];
-  // Dynamically checking if the input value exceeds the remaining budget
+
   const isExceedingBudget = value > RemainingBudget;
 
   return (
-    <div>
-      {/* <Text
-        size="xl"
-        weight={700}
-        sx={(theme) => ({
-          color:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[0]
-              : theme.colors.gray[9],
-        })}
-      >
-        Add a Category to Your Expense
-      </Text> */}
-      {/* <DatePicker
-        label="Choose a date:"
-        value={selectedDate}
-        onChange={handleDateChange}
-      /> */}
-      <DatePicker
-        label="Choose a date:"
-        value={selectedDate}
-        onChange={(date) => {
-          handleDateChange(date);
-          setDateError(""); // Clear error when date is selected
-        }}
-        error={dateError}
-      />
-      <MultiSelect
-        w="40%"
-        mt={10}
-        data={predefinedCategories}
-        label="Select a Category"
-        placeholder="Select a category or create a new one"
-        searchable
-        creatable
-        value={category}
-        onChange={setCategory}
-        maxSelectedValues={1}
-        getCreateLabel={(query) =>
-          `+ Create ${query.charAt(0).toUpperCase()}${query.slice(1)}`
-        }
-        onCreate={(query) => {
-          const capitalizedQuery =
-            query.charAt(0).toUpperCase() + query.slice(1).toLowerCase();
-          const newCategory = {
-            value: query.toLowerCase(),
-            label: capitalizedQuery,
-            isused: "false",
-          };
+    <div className="flex flex-col w-full max-w-4xl mx-auto p-4">
+      {/* Form Container */}
+      <div className="space-y-6 w-full">
+        {/* Date Picker */}
+        <div className="w-full">
+          <DatePicker
+            label="Choose a date:"
+            value={selectedDate}
+            onChange={handleDateChange}
+            error={dateError}
+            className="w-full"
+            styles={(theme) => ({
+              root: {
+                width: "100%",
+              },
+              input: {
+                width: "100%",
+                "&:focus": {
+                  borderColor: theme.colors.blue[5],
+                },
+              },
+            })}
+          />
+        </div>
 
-          // console.log("New category created:", newCategory);
-          setAvailableCategories((current) => [newCategory, ...current]);
-          return newCategory;
-        }}
-        styles={(theme) => ({
-          input: {
-            "&:focus": {
-              borderColor: theme.colors.blue[5],
+        {/* Category Select */}
+        <div className="w-full">
+          <MultiSelect
+            className="w-full"
+            data={predefinedCategories}
+            label="Select a Category"
+            placeholder="Select a category or create a new one"
+            searchable
+            creatable
+            value={category}
+            onChange={setCategory}
+            maxSelectedValues={1}
+            getCreateLabel={(query) =>
+              `+ Create ${query.charAt(0).toUpperCase()}${query.slice(1)}`
+            }
+            onCreate={(query) => {
+              const capitalizedQuery =
+                query.charAt(0).toUpperCase() + query.slice(1).toLowerCase();
+              const newCategory = {
+                value: query.toLowerCase(),
+                label: capitalizedQuery,
+                isused: "false",
+              };
+              setAvailableCategories((current) => [newCategory, ...current]);
+              return newCategory;
+            }}
+            styles={(theme) => ({
+              root: {
+                width: "100%",
+              },
+              input: {
+                width: "100%",
+                "&:focus": {
+                  borderColor: theme.colors.blue[5],
+                },
+              },
+              dropdown: {
+                width: "100%",
+                maxWidth: "100%",
+              },
+              item: {
+                "&[data-selected]": {
+                  "&, &:hover": {
+                    backgroundColor: theme.colors.blue[1],
+                    color: theme.colors.blue[9],
+                  },
+                },
+              },
+            })}
+          />
+        </div>
+
+        {/* Sub-Category Input */}
+        <div className="w-full">
+          <TextInput
+            onChange={(e) => setLabel(e.currentTarget.value)}
+            placeholder="Ex: Car payments"
+            label="Specify Sub-Category"
+            withAsterisk
+            className="w-full"
+            styles={(theme) => ({
+              root: {
+                width: "100%",
+              },
+              input: {
+                width: "100%",
+                "&:focus": {
+                  borderColor: theme.colors.blue[5],
+                },
+              },
+            })}
+          />
+        </div>
+
+        <TextInput
+          onChange={(e) => setValue(Number.parseFloat(e.currentTarget.value))}
+          mt={20}
+          size="sm"
+          w="40%"
+          placeholder="Ex: 3000"
+          label="Amount"
+          withAsterisk
+          className="w-full"
+          styles={(theme) => ({
+            root: {
+              width: "100%",
             },
-          },
-          item: {
-            "&[data-selected]": {
-              "&, &:hover": {
-                backgroundColor: theme.colors.blue[1],
-                color: theme.colors.blue[9],
+            input: {
+              width: "100%",
+              "&:focus": {
+                borderColor: theme.colors.blue[5],
               },
             },
-          },
-        })}
-      />
-
-      <TextInput
-        onChange={(e) => setLabel(e.currentTarget.value)}
-        mt={20}
-        size="sm"
-        w="40%"
-        placeholder="Ex: Car payments"
-        label="Specify Sub-Category"
-        withAsterisk
-      />
-
-      <TextInput
-        onChange={(e) => setValue(Number.parseFloat(e.currentTarget.value))}
-        mt={20}
-        size="sm"
-        w="40%"
-        placeholder="Ex: 3000"
-        label="Amount"
-        withAsterisk
-      />
+          })}
+        />
+      </div>
       {isExceedingBudget && (
         <p className="text-red-400"> Amount Exceeds Current Budget! </p>
       )}

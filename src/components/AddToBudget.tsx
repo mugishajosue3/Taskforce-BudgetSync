@@ -35,6 +35,18 @@ const AddToBudget = () => {
         placeholder="Ex: Christmas bonus"
         label="Label"
         withAsterisk
+        className="w-full"
+            styles={(theme) => ({
+              root: {
+                width: '100%',
+              },
+              input: {
+                width: '100%',
+                '&:focus': {
+                  borderColor: theme.colors.blue[5],
+                },
+              },
+            })}
       />
       <TextInput
         onChange={(e) => setValue(Number.parseFloat(e.currentTarget.value))}
@@ -44,6 +56,18 @@ const AddToBudget = () => {
         placeholder="Ex: 3000"
         label="Amount"
         withAsterisk
+        className="w-full"
+            styles={(theme) => ({
+              root: {
+                width: '100%',
+              },
+              input: {
+                width: '100%',
+                '&:focus': {
+                  borderColor: theme.colors.blue[5],
+                },
+              },
+            })}
       />
       <Button
         mt={20}
