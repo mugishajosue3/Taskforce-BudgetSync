@@ -12,5 +12,10 @@
     },
     { "handle": "filesystem" },
     { "src": "/.*", "dest": "/index.html" }
-  ]
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc && vite build",
+    "vercel-build": "npm run build"
+  }
 }

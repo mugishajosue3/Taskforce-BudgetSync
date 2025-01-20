@@ -10,7 +10,8 @@
     "vercel-build": "npm run build"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.5",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
     "@mantine/core": "^5.9.6",
     "@mantine/hooks": "^5.9.6",
     "autoprefixer": "^10.4.20",
