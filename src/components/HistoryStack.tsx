@@ -123,9 +123,10 @@ const HistoryStack: React.FC = () => {
     position: "sticky",
     top: 0,
     backgroundColor: "#202020",
-    zIndex: 1,
+    // zIndex: 1000,
+    boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.2)", // Optional: Adds subtle separation
   };
-
+  
   const tableHeaderStyle: React.CSSProperties = {
     padding: "12px 15px",
     textAlign: "left",
@@ -133,7 +134,7 @@ const HistoryStack: React.FC = () => {
     fontWeight: "bold",
     backgroundColor: colorScheme === "light" ? "gray" : "#202020",
     color: "#fff",
-  };
+  };  
 
   return (
     <div className={`p-4 ${colorScheme === "dark" ? "text-white" : "text-gray-800"}`}>
