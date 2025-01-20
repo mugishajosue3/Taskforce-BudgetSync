@@ -1,63 +1,32 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import { splitVendorChunkPlugin } from 'vite';
-import { resolve } from 'path';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  plugins: [react(), splitVendorChunkPlugin()],
+  plugins: [react()],
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor': [
-            'react',
-            'react-dom',
-            'react-router-dom',
-            '@mantine/core',
-            '@mantine/hooks'
-          ],
-          'icons': [
-            'react-icons/cg',
-            'react-icons/ai',
-            'react-icons/md',
-            'react-icons/bs'
-          ],
-          'contexts': [
-            './src/store/AccountContext',
-            './src/store/AvailableCategoriesContext',
-            './src/store/CategoriesContext',
-            './src/store/DateRangeContext',
-            './src/store/HistoryContext'
-          ]
+        manualChunks: (id) => {
+          // Chunk vendor modules
+          if (id.includes('node_modules')) {
+            if (id.includes('@mantine')) {
+              return 'vendor-mantine'
+            }
+            if (id.includes('react')) {
+              return 'vendor-react'
+            }
+            if (id.includes('react-icons')) {
+              return 'vendor-icons'
+            }
+            return 'vendor' // all other vendor modules
+          }
         }
       }
     },
     chunkSizeWarningLimit: 1000,
-    sourcemap: true,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
-    }
-  },
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, './src')
-    }
+    sourcemap: true
   },
   optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'react-router-dom',
-      '@mantine/core',
-      '@mantine/hooks',
-      'react-icons/cg',
-      'react-icons/ai',
-      'react-icons/md',
-      'react-icons/bs'
-    ]
+    include: ['react', 'react-dom', 'react-router-dom', '@mantine/core', '@mantine/hooks']
   }
-});
+})

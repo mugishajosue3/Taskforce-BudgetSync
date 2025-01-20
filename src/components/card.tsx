@@ -1,5 +1,3 @@
-'use client'
-
 import { useContext } from "react"
 import CategoriesContext from "../store/CategoriesContext"
 import PieChart from "./../components/PieChart"
