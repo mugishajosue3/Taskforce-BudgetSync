@@ -11,6 +11,12 @@ import DateRangeFilter from "../components/DateRangeFilter";
 import HistoryItem from "../components/HistoryItem";
 
 type HandleFilter = (fromDate: string, toDate: string) => void;
+interface FilterData {
+  dateCreated: string;
+}
+interface DateRangeFilterProps {
+  onFilter: (fromDate: string, toDate: string) => void;
+}
 
 export default function HomePage() {
   const { getTotalAmount } = useContext(CategoriesContext);
@@ -31,13 +37,6 @@ export default function HomePage() {
 
   // Debug logging
   useEffect(() => {
-    // console.group("Budget Information");
-    // console.log("Raw Budget:", budget);
-    // console.log("Raw Expenses:", expenses);
-    // console.log("Raw Balance:", balance);
-    // console.log("Formatted Budget:", formatAmount(budget));
-    // console.log("Formatted Expenses:", formatAmount(expenses));
-    // console.log("Formatted Balance:", formatAmount(balance));
     console.groupEnd();
 
     const currentCategories = JSON.parse(
@@ -47,7 +46,8 @@ export default function HomePage() {
   }, [budget, expenses, balance, accountType]);
 
   // Improved number formatting function
-  const formatAmount = (amount) => {
+  //const formatAmount = (amount) => {
+    const formatAmount = (amount: number): string => {
     try {
       // Ensure amount is a number and handle negative values
       const numAmount = Number(amount);
@@ -68,6 +68,7 @@ export default function HomePage() {
       console.error("Error formatting amount:", error);
       return "0.00";
     }
+    return amount.toLocaleString("en-US");
   };
 
   const storedData = localStorage.getItem(`${accountType}_History`);
@@ -78,10 +79,13 @@ export default function HomePage() {
   // Example use of data
   // console.log(data);
 
-  const handleFilter = (fromDate, toDate) => {
-    const filteredData = data.filter((item) => {
+  //const handleFilter = (fromDate, toDate) => {
+    const handleFilter = (fromDate: string, toDate: string): void => {
+    //const filteredData = data.filter((item) => {
+      const filteredData = data.filter((item: FilterData) => {
       const itemDate = new Date(item.dateCreated);
-      return itemDate >= new Date(fromDate) && itemDate <= new Date(toDate);
+      //return itemDate >= new Date(fromDate) && itemDate <= new Date(toDate);
+        return true;
     });
     // console.log("Filtered Data:", filteredData);
   };

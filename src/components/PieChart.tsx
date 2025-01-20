@@ -1,12 +1,12 @@
 import { useRef, useEffect, useContext } from "react";
 import CategoriesContext from "../store/CategoriesContext";
 
-type drawPieArgs = {
+type DrawPieArgs = {
   context: CanvasRenderingContext2D;
   data: { type: string; amount: number; color: string }[];
 };
 
-function drawPie({ context, data }: drawPieArgs) {
+function drawPie({ context, data }: DrawPieArgs) {
   let totalAmount = data.reduce((sum, { amount }) => sum + amount, 0);
 
   //calculating the angle the slice (portion) will take in the chart
@@ -47,11 +47,12 @@ function drawPie({ context, data }: drawPieArgs) {
   });
 }
 
+
 const PieChart = () => {
   const { getTotalAmount } = useContext(CategoriesContext);
   const expenses = getTotalAmount("Expenses");
   const budget = getTotalAmount("Budget");
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const data = [
     {
@@ -68,26 +69,20 @@ const PieChart = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) {
-      return;
-    }
+    if (!canvas) return;
 
     const context = canvas.getContext("2d");
-    if (!context) {
-      return;
-    }
+    if (!context) return;
 
     drawPie({ context, data });
   }, [budget, expenses]);
 
   return (
-    // use HTML canvas API to draw a pie chart
     <canvas
-      style={{ margin: "auto" }}
       ref={canvasRef}
       width={500}
       height={400}
-      style={{ width: "100%", height: "auto" }}
+      style={{ width: "100%", height: "auto", maxWidth: "500px" }}
     />
   );
 };

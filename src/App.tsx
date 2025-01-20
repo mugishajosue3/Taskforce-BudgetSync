@@ -1,12 +1,41 @@
 import { BrowserRouter } from "react-router-dom";
-import { Paper } from "@mantine/core";
-import { MantineProvider } from "@mantine/core";
-import MainAppShell from "./components/MainAppShell";
-import { AvailableCategoriesContextProvider } from "./store/AvailableCategoriesContext";
-import { CategoriesContextProvider } from "./store/CategoriesContext";
-import { HistoryContextProvider } from "./store/HistoryContext";
-import { AccountProvider } from "./store/AccountContext";
-import { DateRangeProvider } from "./store/DateRangeContext";
+import { Paper, MantineProvider } from "@mantine/core";
+import { Suspense, lazy } from 'react';
+import { LoadingOverlay } from '@mantine/core';
+
+// Lazy load the main component
+const MainAppShell = lazy(() => import("./components/MainAppShell"));
+
+// Lazy load context providers
+const AvailableCategoriesContextProvider = lazy(() => 
+  import("./store/AvailableCategoriesContext").then(module => ({
+    default: module.AvailableCategoriesContextProvider
+  }))
+);
+
+const CategoriesContextProvider = lazy(() => 
+  import("./store/CategoriesContext").then(module => ({
+    default: module.CategoriesContextProvider
+  }))
+);
+
+const HistoryContextProvider = lazy(() => 
+  import("./store/HistoryContext").then(module => ({
+    default: module.HistoryContextProvider
+  }))
+);
+
+const AccountProvider = lazy(() => 
+  import("./store/AccountContext").then(module => ({
+    default: module.AccountProvider
+  }))
+);
+
+const DateRangeProvider = lazy(() => 
+  import("./store/DateRangeContext").then(module => ({
+    default: module.DateRangeProvider
+  }))
+);
 
 export default function App() {
   return (
@@ -17,21 +46,23 @@ export default function App() {
         fontSizes: { md: 90 },
       }}
     >
-      <BrowserRouter>
-        <AccountProvider>
-          <Paper>
-            <DateRangeProvider>
-              <AvailableCategoriesContextProvider>
-                <HistoryContextProvider>
-                  <CategoriesContextProvider>
-                    <MainAppShell />
-                  </CategoriesContextProvider>
-                </HistoryContextProvider>
-              </AvailableCategoriesContextProvider>
-            </DateRangeProvider>
-          </Paper>
-        </AccountProvider>
-      </BrowserRouter>
+      <Suspense fallback={<LoadingOverlay visible={true} overlayBlur={2} />}>
+        <BrowserRouter>
+          <AccountProvider>
+            <Paper>
+              <DateRangeProvider>
+                <AvailableCategoriesContextProvider>
+                  <HistoryContextProvider>
+                    <CategoriesContextProvider>
+                      <MainAppShell />
+                    </CategoriesContextProvider>
+                  </HistoryContextProvider>
+                </AvailableCategoriesContextProvider>
+              </DateRangeProvider>
+            </Paper>
+          </AccountProvider>
+        </BrowserRouter>
+      </Suspense>
     </MantineProvider>
   );
 }

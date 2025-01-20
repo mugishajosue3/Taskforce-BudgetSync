@@ -12,48 +12,34 @@ const DisplayCard = ({ label, amount, color }: DisplayCardProps) => {
   return (
     <Card
       shadow="sm"
-      padding={{ base: 'md', sm: 'lg', md: 'xl' }}
-      mb={{ base: 'md', sm: 'lg' }}
-      sx={(theme) => ({
+      radius="md"
+      withBorder
+      style={{
         height: 'auto',
-        minHeight: { base: '180px', sm: '200px', md: '220px' },
+        minHeight: '180px',
         textAlign: 'center',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         transition: 'transform 0.2s ease',
+        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
+      }}
+      sx={{
         '&:hover': {
           transform: 'translateY(-5px)',
         },
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
-      })}
+        '@media (min-width: 768px)': {
+          minHeight: '200px',
+        },
+        '@media (min-width: 992px)': {
+          minHeight: '220px',
+        }
+      }}
     >
-      <Text 
-        weight={500}
-        size={{ base: 24, sm: 28, md: 32 }}
-        sx={{
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          wordBreak: 'break-word',
-          display: '-webkit-box',
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: 'vertical',
-          lineHeight: 1.2,
-        }}
-      >
+      <Text size="xl" weight={500} color={color}>
         {label}
       </Text>
-      <Text 
-        mt="xs"
-        size={{ base: 24, sm: 28, md: 32 }}
-        color={color}
-        weight={500}
-        sx={{
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          wordBreak: 'break-word',
-        }}
-      >
+      <Text size="xl" weight={700} color={color}>
         ${amount.toLocaleString("en-US")}
       </Text>
     </Card>

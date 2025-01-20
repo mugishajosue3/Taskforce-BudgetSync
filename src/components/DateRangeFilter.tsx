@@ -6,7 +6,12 @@ import { useDateRange } from "../store/DateRangeContext";
 import { useLocalStorage } from "@mantine/hooks";
 import { ColorScheme } from "@mantine/core";
 
-const DateRangeFilter: React.FC = () => {
+interface DateRangeFilterProps {
+  onFilter: (fromDate: string, toDate: string) => void;
+}
+
+// const DateRangeFilter: React.FC = () => {
+  const DateRangeFilter: React.FC<DateRangeFilterProps> = ({ onFilter }) => {
   const { setFromDate, setToDate } = useDateRange(); // Get context functions
   const [fromDate, setLocalFromDate] = useState<Date | null>(null);
   const [toDate, setLocalToDate] = useState<Date | null>(null);
