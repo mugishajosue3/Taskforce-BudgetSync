@@ -12,6 +12,14 @@ type AvailableCategories = {
   value: string;
   isused: string;
 };
+interface DatePickerProps {
+  label: string
+  value: string
+  onChange: (date: string) => void
+  error: string
+  className?: string
+  styles?: (theme: any) => any
+}
 
 const AddToExpenses = () => {
   const [dateError, setDateError] = useState<string>("");

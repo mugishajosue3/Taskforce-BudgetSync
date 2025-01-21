@@ -1,30 +1,45 @@
-import type React from "react"
-import { useState } from "react"
-import { X } from "lucide-react"
+import type React from "react";
+import { useState } from "react";
+import { X } from "lucide-react";
 
 interface SignUpModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onSubmit: (data: { accountName: string; description: string; profilePicture: File | null }) => void
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (data: {
+    accountName: string;
+    description: string;
+    profilePicture: File | null;
+  }) => void;
 }
 
 export function SignUpModal({ isOpen, onClose, onSubmit }: SignUpModalProps) {
-  const [accountName, setAccountName] = useState("")
-  const [description, setDescription] = useState("")
-  const [profilePicture, setProfilePicture] = useState<File | null>(null)
+  const [accountName, setAccountName] = useState("");
+  const [description, setDescription] = useState("");
+  const [profilePicture, setProfilePicture] = useState<File | null>(null);
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    onSubmit({ accountName, description, profilePicture })
-    onClose()
-  }
+    e.preventDefault();
+    onSubmit({ accountName, description, profilePicture });
+    onClose();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setProfilePicture(e.target.files[0]);
+    } else {
+      setProfilePicture(null);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="bg-gray-800 rounded-lg w-full max-w-md p-6 relative">
-        <button onClick={onClose} className="absolute right-4 top-4 text-gray-400 hover:text-white">
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 text-gray-400 hover:text-white"
+        >
           <X size={20} />
         </button>
 
@@ -32,7 +47,9 @@ export function SignUpModal({ isOpen, onClose, onSubmit }: SignUpModalProps) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Account Name</label>
+            <label className="block text-sm text-gray-400 mb-1">
+              Account Name
+            </label>
             <input
               type="text"
               value={accountName}
@@ -44,7 +61,9 @@ export function SignUpModal({ isOpen, onClose, onSubmit }: SignUpModalProps) {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Description</label>
+            <label className="block text-sm text-gray-400 mb-1">
+              Description
+            </label>
             <input
               type="text"
               value={description}
@@ -56,10 +75,12 @@ export function SignUpModal({ isOpen, onClose, onSubmit }: SignUpModalProps) {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Profile Picture</label>
+            <label className="block text-sm text-gray-400 mb-1">
+              Profile Picture
+            </label>
             <input
               type="file"
-              onChange={(e) => setProfilePicture(e.files?.[0] || null)}
+              onChange={handleFileChange}
               className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:border-blue-500"
               accept="image/*"
             />
@@ -74,6 +95,5 @@ export function SignUpModal({ isOpen, onClose, onSubmit }: SignUpModalProps) {
         </form>
       </div>
     </div>
-  )
+  );
 }
-

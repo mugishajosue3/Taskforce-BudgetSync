@@ -24,13 +24,17 @@ import AccountSelectionModal from "./AccountSelectionModal";
 import { ErrorBoundary } from "react-error-boundary";
 import { FallbackProps } from 'react-error-boundary';
 
-// Lazy load pages (unchanged)
+// Updated interface to include className
+interface MenuTargetProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
 const HomePage = lazy(() => import("../pages/HomePage"));
 const AddBudgetPage = lazy(() => import("../pages/AddBudgetPage"));
 const AddExpensePage = lazy(() => import("../pages/AddExpensePage"));
 const DisplayCategoriesPage = lazy(() => import("../pages/DisplayCategoriesPage"));
 
-// Default account types
 const defaultAccounts = [
   "BK Account",
   "Equity Bank Account",
@@ -38,7 +42,6 @@ const defaultAccounts = [
   "CASH"
 ];
 
-// Error Fallback Component (unchanged)
 const ErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
   return (
     <div role="alert" style={{ padding: '20px', textAlign: 'center' }}>
@@ -87,24 +90,23 @@ const MainAppShell = () => {
     handleAccountChange("Log out");
   }, [handleAccountChange]);
 
-  // Load accounts from localStorage
   useEffect(() => {
     const loadAccounts = () => {
       try {
-        const userAccounts = JSON.parse(localStorage.getItem("user-accounts")) || [];
-        const currentAccount = JSON.parse(localStorage.getItem("current-account"));
+        const userAccountsStr = localStorage.getItem("user-accounts");
+        const currentAccountStr = localStorage.getItem("current-account");
         
-        // Create a Set to store unique account names
+        const userAccounts = userAccountsStr ? JSON.parse(userAccountsStr) : [];
+        const currentAccount = currentAccountStr ? JSON.parse(currentAccountStr) : null;
+        
         const uniqueAccounts = new Set(defaultAccounts);
         
-        // Add user accounts
         userAccounts.forEach((account: any) => {
           if (account.name) {
             uniqueAccounts.add(account.name);
           }
         });
         
-        // Add current account if it exists
         if (currentAccount?.name) {
           uniqueAccounts.add(currentAccount.name);
         }
@@ -119,7 +121,6 @@ const MainAppShell = () => {
     loadAccounts();
   }, []);
 
-  // Load current account type
   useEffect(() => {
     const storedAccountType = localStorage.getItem("accountType");
     if (storedAccountType) {
@@ -163,7 +164,6 @@ const MainAppShell = () => {
                 hidden={!opened}
                 width={{ sm: 250, lg: 350 }}
               >
-                {/* Navigation Links (unchanged) */}
                 <NavigationLink
                   label="Home"
                   icon={<AiOutlineHome />}
@@ -201,7 +201,7 @@ const MainAppShell = () => {
                   }}
                 >
                   <Menu>
-                    <Menu.Target className="flex flex-col items-center justify-center">
+                    <Menu.Target >
                       <Button className="w-40" variant="outline" color="gray">
                         {accountType.replace(/"/g, "")}
                       </Button>

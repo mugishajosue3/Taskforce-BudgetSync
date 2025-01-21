@@ -11,7 +11,28 @@ import AccountFallback from "../../public/accountFallback.png"
 import { SignUpModal } from "./SignUpModal"
 import { v4 as crypto } from "uuid"
 
-const defaultAccountTypes = [
+// Define specific account types
+export type AccountType = "BK Account" | "Equity Bank Account" | "MOMO Account" | "CASH";
+
+// Define types for account with strict type checking
+export type Account = {
+  id: string
+  type: AccountType
+  name: string
+  description?: string
+  users: number
+  profilePicture?: string
+}
+
+type AccountTypeInfo = {
+  id: string
+  title: string
+  description: string
+  icon: string
+  users: number
+}
+
+const defaultAccountTypes: AccountTypeInfo[] = [
   {
     id: "BK Account",
     title: "BK Account",
@@ -46,27 +67,25 @@ export default function AccountSelectionModal() {
   const navigate = useNavigate()
   const { addAccount, showModal, setShowModal, accounts } = useAccount()
   const [showSignUpModal, setShowSignUpModal] = useState(false)
-  const [accountTypes, setAccountTypes] = useState(defaultAccountTypes)
+  const [accountTypes, setAccountTypes] = useState<AccountTypeInfo[]>(defaultAccountTypes)
 
-  // Load custom accounts once on component mount
   useEffect(() => {
     const loadCustomAccounts = () => {
       try {
-        // Get all accounts from localStorage
-        const userAccounts = JSON.parse(localStorage.getItem("user-accounts")) || []
-        const currentAccount = JSON.parse(localStorage.getItem("current-account"))
+        const userAccountsStr = localStorage.getItem("user-accounts")
+        const currentAccountStr = localStorage.getItem("current-account")
+        
+        const userAccounts: Account[] = userAccountsStr ? JSON.parse(userAccountsStr) : []
+        const currentAccount: Account | null = currentAccountStr ? JSON.parse(currentAccountStr) : null
 
-        // Create a Map to store unique accounts by ID
-        const uniqueAccounts = new Map()
+        const uniqueAccounts = new Map<string, AccountTypeInfo>()
 
-        // Add default accounts to the Map
         defaultAccountTypes.forEach(acc => {
           uniqueAccounts.set(acc.id, acc)
         })
 
-        // Process user accounts
         userAccounts.forEach(acc => {
-          if (!uniqueAccounts.has(acc.id)) {
+          if (!uniqueAccounts.has(acc.id) && defaultAccountTypes.some(def => def.title === acc.type)) {
             uniqueAccounts.set(acc.id, {
               id: acc.id,
               title: acc.name,
@@ -77,8 +96,8 @@ export default function AccountSelectionModal() {
           }
         })
 
-        // Process current account if it exists and isn't already included
-        if (currentAccount && !uniqueAccounts.has(currentAccount.id)) {
+        if (currentAccount && !uniqueAccounts.has(currentAccount.id) && 
+            defaultAccountTypes.some(def => def.title === currentAccount.type)) {
           uniqueAccounts.set(currentAccount.id, {
             id: currentAccount.id,
             title: currentAccount.name,
@@ -88,7 +107,6 @@ export default function AccountSelectionModal() {
           })
         }
 
-        // Convert Map values to array and update state
         setAccountTypes(Array.from(uniqueAccounts.values()))
       } catch (error) {
         console.error("Error loading accounts:", error)
@@ -99,51 +117,54 @@ export default function AccountSelectionModal() {
     loadCustomAccounts()
   }, [])
 
-  const handleSelect = (type) => {
+  const handleSelect = (type: string) => {
     const accountType = accountTypes.find((t) => t.id === type)
     if (!accountType) return
 
     const isDefaultAccount = defaultAccountTypes.some(def => def.id === type)
+    
+    // Ensure the account type is one of the allowed types
+    const accountTypeValue = defaultAccountTypes.find(def => def.title === accountType.title)?.title
+    if (!accountTypeValue) return
 
-    if (isDefaultAccount) {
-      const account = {
-        id: crypto(),
-        type: accountType.title,
-        name: accountType.title,
-        users: accountType.users,
-      }
-      addAccount(account)
-    } else {
-      const account = {
-        id: accountType.id,
-        type: accountType.title,
-        name: accountType.title,
-        description: accountType.description,
-        users: accountType.users,
-        profilePicture: accountType.icon === AccountFallback ? "" : accountType.icon
-      }
-      addAccount(account)
+    const account: Account = {
+      id: isDefaultAccount ? crypto() : accountType.id,
+      type: accountTypeValue as AccountType, // Safe assertion since we validated above
+      name: accountType.title,
+      description: accountType.description,
+      users: accountType.users,
+      profilePicture: !isDefaultAccount && accountType.icon !== AccountFallback ? accountType.icon : undefined
     }
+
+    addAccount(account)
   }
 
-  const handleSignUp = async (data) => {
+  const handleSignUp = async (data: { 
+    accountName: string
+    description: string
+    profilePicture: File | null 
+  }) => {
     try {
-      let profilePictureBase64 = '';
+      let profilePictureBase64 = ''
       if (data.profilePicture) {
-        profilePictureBase64 = await convertFileToBase64(data.profilePicture);
+        profilePictureBase64 = await convertFileToBase64(data.profilePicture)
       }
+      
+      // Find the closest matching default account type
+      const matchingDefaultType = defaultAccountTypes.find(def => 
+        def.title.toLowerCase().includes(data.accountName.toLowerCase())
+      )?.title || "CASH" // Default to CASH if no match found
 
       const newId = crypto()
-      const newAccount = {
+      const newAccount: Account = {
         id: newId,
-        type: data.accountName,
+        type: matchingDefaultType as AccountType,
         name: data.accountName,
         description: data.description,
         users: 1,
-        profilePicture: profilePictureBase64
+        profilePicture: profilePictureBase64 || undefined
       }
       
-      // Add to account types with consistent structure
       setAccountTypes(prev => [...prev, {
         id: newId,
         title: data.accountName,
@@ -159,13 +180,13 @@ export default function AccountSelectionModal() {
     }
   }
 
-  const convertFileToBase64 = (file) => {
+  const convertFileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = error => reject(error)
+    })
   }
 
   if (!showModal) return null;
@@ -179,12 +200,12 @@ export default function AccountSelectionModal() {
               <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-100">
                 Choose Account Type
               </h1>
-              <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">
+              <p className="flex flex-col text-sm md:text-base text-gray-600 dark:text-gray-400">
                 Select the best plan for you
                 <span>
                   Want to create Account{" "}
                   <span
-                    className="text-white cursor-pointer hover:text-blue-400"
+                    className="text-blue-400 cursor-pointer hover:text-white"
                     onClick={() => setShowSignUpModal(true)}
                   >
                     Sign Up!
@@ -227,5 +248,5 @@ export default function AccountSelectionModal() {
         onSubmit={handleSignUp} 
       />
     </div>
-  );
+  )
 }

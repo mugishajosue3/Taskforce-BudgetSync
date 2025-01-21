@@ -3,12 +3,14 @@ import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
 
-type DatePickerProps = {
-  label?: string;
-  value?: string; // Current date in dd/mm/yyyy format
-  onChange: (date: string) => void;
-  error?: string;
-};
+interface DatePickerProps {
+  label: string
+  value: string
+  onChange: (date: string) => void
+  error: string
+  className?: string
+  styles?: (theme: any) => any
+}
 
 const DatePicker: React.FC<DatePickerProps> = ({ 
   label, 
@@ -91,7 +93,11 @@ const DatePicker: React.FC<DatePickerProps> = ({
         </p>
       )}
 
-      <style jsx global>{`
+<style>{`
+        .react-datepicker-wrapper,
+        .react-datepicker__input-container {
+          width: 100%;
+        }
         .react-datepicker-wrapper,
         .react-datepicker__input-container {
           width: 100%;
