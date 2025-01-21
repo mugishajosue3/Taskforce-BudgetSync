@@ -96,8 +96,7 @@ export default function AccountSelectionModal() {
           }
         })
 
-        if (currentAccount && !uniqueAccounts.has(currentAccount.id) && 
-            defaultAccountTypes.some(def => def.title === currentAccount.type)) {
+        if (currentAccount && !uniqueAccounts.has(currentAccount.id)) {
           uniqueAccounts.set(currentAccount.id, {
             id: currentAccount.id,
             title: currentAccount.name,
@@ -117,19 +116,34 @@ export default function AccountSelectionModal() {
     loadCustomAccounts()
   }, [])
 
+  const determineAccountType = (name: string): AccountType => {
+    const normalizedName = name.toLowerCase()
+    
+    if (normalizedName.includes('bk')) return "BK Account"
+    if (normalizedName.includes('equity')) return "Equity Bank Account"
+    if (normalizedName.includes('momo') || normalizedName.includes('mobile')) return "MOMO Account"
+    if (normalizedName.includes('cash')) return "CASH"
+    
+    // Default to the most appropriate type based on the name or CASH
+    return defaultAccountTypes.find(type => 
+      normalizedName.includes(type.title.toLowerCase())
+    )?.title as AccountType || "CASH"
+  }
+
   const handleSelect = (type: string) => {
     const accountType = accountTypes.find((t) => t.id === type)
     if (!accountType) return
 
     const isDefaultAccount = defaultAccountTypes.some(def => def.id === type)
     
-    // Ensure the account type is one of the allowed types
-    const accountTypeValue = defaultAccountTypes.find(def => def.title === accountType.title)?.title
-    if (!accountTypeValue) return
+    // Determine the appropriate account type
+    const accountTypeValue = isDefaultAccount 
+      ? accountType.title as AccountType 
+      : determineAccountType(accountType.title)
 
     const account: Account = {
       id: isDefaultAccount ? crypto() : accountType.id,
-      type: accountTypeValue as AccountType, // Safe assertion since we validated above
+      type: accountTypeValue,
       name: accountType.title,
       description: accountType.description,
       users: accountType.users,
@@ -149,16 +163,14 @@ export default function AccountSelectionModal() {
       if (data.profilePicture) {
         profilePictureBase64 = await convertFileToBase64(data.profilePicture)
       }
-      
-      // Find the closest matching default account type
-      const matchingDefaultType = defaultAccountTypes.find(def => 
-        def.title.toLowerCase().includes(data.accountName.toLowerCase())
-      )?.title || "CASH" // Default to CASH if no match found
 
+      // Determine account type based on the name
+      const accountType = determineAccountType(data.accountName)
+      
       const newId = crypto()
       const newAccount: Account = {
         id: newId,
-        type: matchingDefaultType as AccountType,
+        type: accountType,
         name: data.accountName,
         description: data.description,
         users: 1,
